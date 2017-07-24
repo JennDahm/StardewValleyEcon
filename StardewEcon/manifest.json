@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Stardew Econ",
+  "Author": "Bryce Abell & Jennifer Dahm",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Adds dynamic economic events that vary the prices on crops and other items.",
+  "UniqueID": "dahm.StardewEcon",
+  "EntryDll": "StardewEcon.dll"
+}
