@@ -15,6 +15,8 @@ namespace StardewEcon
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
+        private IEnumerable<EconEvent> events;
+
         /*********
         ** Public methods
         *********/
@@ -22,7 +24,14 @@ namespace StardewEcon
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
+            this.events = new List<EconEvent>()
+            {
+                new EconEvent("This is the first headline.", "+20%"),
+                new EconEvent("This is the second headline.", "-10%"),
+                new EconEvent("This is the third headline.", "+5%")
+            };
+
+            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
             TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
             TimeEvents.TimeOfDayChanged += TimeEvents_TimeOfDayChanged;
             MenuEvents.MenuChanged += MenuEvents_MenuChanged;
@@ -38,7 +47,7 @@ namespace StardewEcon
             if(e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.P)
             {
                 //Game1.activeClickableMenu = new Billboard(false);
-                Game1.activeClickableMenu = new NewsBulletinMenu();
+                Game1.activeClickableMenu = new NewsBulletinMenu(this.events);
             }
         }
 

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EconEvent.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -21,15 +21,20 @@ namespace StardewEcon
 
         private string hoverText;
 
-        public NewsBulletinMenu()
+        private IList<EconEvent> events;
+
+        public NewsBulletinMenu(IEnumerable<EconEvent> events)
             : base(x: 0, y: 0, width: 0, height: 0, showUpperRightCloseButton: true)
         {
+            this.events = new List<EconEvent>(events);
+
             // Calculate some numbers
+            int numItems = this.events.Count;
             this.separatorHeight = 4 * Game1.pixelZoom;
             this.itemHeight = 50 * Game1.pixelZoom;
 
             this.internalWidth = 100 * Game1.pixelZoom;
-            this.internalHeight = separatorHeight * 2 + itemHeight * 3;
+            this.internalHeight = separatorHeight * (numItems-1) + itemHeight * (numItems);
             this.xOffsetToInternal = IClickableMenu.borderWidth;
             this.yOffsetToInternal = IClickableMenu.borderWidth + 7 * Game1.pixelZoom;
 
@@ -48,7 +53,7 @@ namespace StardewEcon
 
         public override void draw(SpriteBatch b)
         {
-            Rectangle[] contentRectangles = getContentRectangles();
+            var content = getContent().ToList();
 
             // Draw box and background fade
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
@@ -64,16 +69,16 @@ namespace StardewEcon
             base.drawBorderLabel(b, "News Bulletin", Game1.smallFont, this.xPositionOnScreen + Game1.tileSize/2, this.yPositionOnScreen - Game1.tileSize + Game1.tileSize / 8);
 
             // Draw contents
-            for( int i = 0; i < 3; i++ )
+            for( int i = 0; i < content.Count; i++ )
             {
-                Rectangle rect = contentRectangles[i];
-                if (i != 2)
+                EconEvent e = content[i].Item1;
+                Rectangle rect = content[i].Item2;
+                if (i != content.Count - 1)
                 {
                     this.drawHorizontalPartition(b, rect.Bottom - (Game1.tileSize - this.separatorHeight) / 2, true);
                 }
-
-                string msg = "This is a test of the string drawing function. This is only a test.";
-                Utility.DrawWrappedString(b, Game1.dialogueFont, msg, rect, Color.Black);
+                
+                Utility.DrawWrappedString(b, Game1.dialogueFont, e.Headline, rect, Color.Black);
             }
 
             // Draw close box and mouse
@@ -97,29 +102,24 @@ namespace StardewEcon
             base.performHoverAction(x, y);
             this.hoverText = "";
             int i = 0;
-            foreach (Rectangle rect in getContentRectangles())
+            foreach (var content in getContent())
             {
+                Rectangle rect = content.Item2;
                 i++;
                 if ( rect.Contains(x, y) )
                 {
-                    this.hoverText = $"Box {i}";
+                    this.hoverText = content.Item1.HoverText;
                     break;
                 }
             }
         }
 
-        private Rectangle[] getContentRectangles()
+        private IEnumerable<Tuple<EconEvent, Rectangle>> getContent()
         {
             int x = this.xPositionOnScreen + this.xOffsetToInternal;
             int y = this.yPositionOnScreen + this.yOffsetToInternal;
             int dy = this.itemHeight + this.separatorHeight;
-            Rectangle[] contentRectangles = new Rectangle[]
-            {
-                new Rectangle(x, y + 0*dy, this.internalWidth, this.itemHeight),
-                new Rectangle(x, y + 1*dy, this.internalWidth, this.itemHeight),
-                new Rectangle(x, y + 2*dy, this.internalWidth, this.itemHeight),
-            };
-            return contentRectangles;
+            return this.events.Select((e, i) => Tuple.Create(e, new Rectangle(x, y + i * dy, this.internalWidth, this.itemHeight)));
         }
     }
 }
