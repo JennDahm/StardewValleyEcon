@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EconEvent.cs" />
+    <Compile Include="IEconEvent.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

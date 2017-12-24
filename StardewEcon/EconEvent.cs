@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace StardewEcon
 {
-    class EconEvent
+    class EconEvent : IEconEvent
     {
         public EconEvent(string headline, string hover)
         {
             this.Headline = headline;
             this.HoverText = hover;
+        }
+
+        public void RandomlyInitialize()
+        {
         }
 
         public string Headline { get; }

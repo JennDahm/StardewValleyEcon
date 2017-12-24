@@ -21,12 +21,12 @@ namespace StardewEcon
 
         private string hoverText;
 
-        private IList<EconEvent> events;
+        private IList<IEconEvent> events;
 
-        public NewsBulletinMenu(IEnumerable<EconEvent> events)
+        public NewsBulletinMenu(IEnumerable<IEconEvent> events)
             : base(x: 0, y: 0, width: 0, height: 0, showUpperRightCloseButton: true)
         {
-            this.events = new List<EconEvent>(events);
+            this.events = new List<IEconEvent>(events);
 
             // Calculate some numbers
             int numItems = this.events.Count;
@@ -71,7 +71,7 @@ namespace StardewEcon
             // Draw contents
             for( int i = 0; i < content.Count; i++ )
             {
-                EconEvent e = content[i].Item1;
+                IEconEvent e = content[i].Item1;
                 Rectangle rect = content[i].Item2;
                 if (i != content.Count - 1)
                 {
@@ -114,7 +114,7 @@ namespace StardewEcon
             }
         }
 
-        private IEnumerable<Tuple<EconEvent, Rectangle>> getContent()
+        private IEnumerable<Tuple<IEconEvent, Rectangle>> getContent()
         {
             int x = this.xPositionOnScreen + this.xOffsetToInternal;
             int y = this.yPositionOnScreen + this.yOffsetToInternal;

@@ -9,13 +9,18 @@ using StardewValley.Menus;
 
 using Object = StardewValley.Object;
 using System.Collections.Generic;
+using System.IO;
 
 namespace StardewEcon
 {
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        private IEnumerable<EconEvent> events;
+        private IList<IEconEvent> monthlyEvents;
+        private IList<IEconEvent> biweeklyEvents;
+        private IList<IEconEvent> weeklyEvents;
+
+        private IEnumerable<IEconEvent> currentEvents;
 
         /*********
         ** Public methods
@@ -24,11 +29,15 @@ namespace StardewEcon
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.events = new List<EconEvent>()
+            this.monthlyEvents = this.LoadEventsFrom("monthly.txt");
+            this.biweeklyEvents = this.LoadEventsFrom("biweekly.txt");
+            this.weeklyEvents = this.LoadEventsFrom("weekly.txt");
+
+            this.currentEvents = new List<IEconEvent>()
             {
-                new EconEvent("This is the first headline.", "+20%"),
-                new EconEvent("This is the second headline.", "-10%"),
-                new EconEvent("This is the third headline.", "+5%")
+                RandomlySelectFromList(this.monthlyEvents),
+                RandomlySelectFromList(this.biweeklyEvents),
+                RandomlySelectFromList(this.weeklyEvents)
             };
 
             SaveEvents.AfterLoad += SaveEvents_AfterLoad;
@@ -47,7 +56,7 @@ namespace StardewEcon
             if(e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.P)
             {
                 //Game1.activeClickableMenu = new Billboard(false);
-                Game1.activeClickableMenu = new NewsBulletinMenu(this.events);
+                Game1.activeClickableMenu = new NewsBulletinMenu(this.currentEvents);
             }
         }
 
@@ -55,7 +64,7 @@ namespace StardewEcon
         {
             this.Monitor.Log($"Loaded save for {Game1.player.name}.", LogLevel.Info);
 
-            int index = Object.stone;
+            /*int index = Object.stone;
             string str;
             Game1.objectInformation.TryGetValue(index, out str);
             
@@ -71,7 +80,7 @@ namespace StardewEcon
             }
 
             Game1.objectInformation[index] = str;
-            this.Monitor.Log($"Modified price of stone to 500.", LogLevel.Info);
+            this.Monitor.Log($"Modified price of stone to 500.", LogLevel.Info);*/
         }
 
         private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
@@ -100,6 +109,45 @@ namespace StardewEcon
             var stone = new Object(Object.stone, 1);
             var price = stone.price;
             this.Monitor.Log($"Price of stone at beginning of day: {price}", LogLevel.Debug);
+        }
+
+        private IList<IEconEvent> LoadEventsFrom(string filename)
+        {
+            var list = new List<IEconEvent>();
+            var filepath = Path.Combine(this.Helper.DirectoryPath, filename);
+            var fileinfo = new FileInfo(filepath);
+            this.Monitor.Log($"Looking for events in {fileinfo.FullName}");
+
+            // Make sure the file exists, otherwise we have to display dummy text.
+            if( !fileinfo.Exists )
+            {
+                list.Add(new EconEvent("Nothing to report.", ""));
+                return list;
+            }
+
+            foreach(string line in File.ReadLines(filepath))
+            {
+                if(string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+                string trimmedLine = line.Trim();
+                list.Add(new EconEvent(trimmedLine, "-"));
+
+                this.Monitor.Log(trimmedLine, LogLevel.Debug);
+            }
+
+            return list;
+        }
+
+        private T RandomlySelectFromList<T>(IList<T> list)
+        {
+            if( (list?.Count ?? 0) == 0 )
+            {
+                return default(T);
+            }
+
+            return list[new Random().Next(list.Count)];
         }
     }
 }
