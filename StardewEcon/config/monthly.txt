@@ -1,0 +1,2 @@
+An earthquake destroyed the %3 farm near %0.
+Halelujah it's raining %3!

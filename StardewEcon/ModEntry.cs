@@ -29,9 +29,9 @@ namespace StardewEcon
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.monthlyEvents = this.LoadEventsFrom("monthly.txt");
-            this.biweeklyEvents = this.LoadEventsFrom("biweekly.txt");
-            this.weeklyEvents = this.LoadEventsFrom("weekly.txt");
+            this.monthlyEvents = this.LoadEventsFrom(@"config/monthly.txt");
+            this.biweeklyEvents = this.LoadEventsFrom(@"config/biweekly.txt");
+            this.weeklyEvents = this.LoadEventsFrom(@"config/weekly.txt");
 
             this.currentEvents = new List<IEconEvent>()
             {
@@ -118,23 +118,26 @@ namespace StardewEcon
             var fileinfo = new FileInfo(filepath);
             this.Monitor.Log($"Looking for events in {fileinfo.FullName}");
 
-            // Make sure the file exists, otherwise we have to display dummy text.
-            if( !fileinfo.Exists )
+            // Make sure the file exists before reading from it
+            if (fileinfo.Exists)
             {
-                list.Add(new EconEvent("Nothing to report.", ""));
-                return list;
+                foreach (string line in File.ReadLines(filepath))
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+                    string trimmedLine = line.Trim();
+                    list.Add(new EconEvent(trimmedLine, "-"));
+
+                    this.Monitor.Log(trimmedLine, LogLevel.Debug);
+                }
             }
 
-            foreach(string line in File.ReadLines(filepath))
+            // If the file was empty or nonexistant, we need dummy text.
+            if (list.Count == 0)
             {
-                if(string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-                string trimmedLine = line.Trim();
-                list.Add(new EconEvent(trimmedLine, "-"));
-
-                this.Monitor.Log(trimmedLine, LogLevel.Debug);
+                list.Add(new EconEvent("Nothing to report.", ""));
             }
 
             return list;
