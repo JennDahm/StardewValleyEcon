@@ -86,7 +86,7 @@ namespace StardewEcon
             // Draw hover text!
             if (!string.IsNullOrEmpty(this.hoverText))
             {
-                IClickableMenu.drawHoverText(b, hoverText, Game1.smallFont);
+                Utility.DrawHoverTextWithItem(b, "+20%", Game1.smallFont, StardewValley.Object.stone);
             }
         }
 
