@@ -58,6 +58,8 @@
   <ItemGroup>
     <None Include="manifest.json" />
     <None Include="packages.config" />
+    <None Include="README.md" />
+    <None Include="TODO.md" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
