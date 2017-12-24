@@ -16,8 +16,8 @@ namespace StardewEcon
         private int yOffsetToInternal;
         private int itemHeight;
         private int separatorHeight;
-
-        private string hoverText;
+        
+        private EconEventHoverBox hoverBox;
 
         private IList<IEconEvent> events;
 
@@ -84,10 +84,7 @@ namespace StardewEcon
             this.drawMouse(b);
 
             // Draw hover text!
-            if (!string.IsNullOrEmpty(this.hoverText))
-            {
-                new EconEventHoverBox(StardewValley.Object.stone, 20).draw(b);
-            }
+            this.hoverBox?.draw(b);
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
@@ -98,15 +95,19 @@ namespace StardewEcon
         public override void performHoverAction(int x, int y)
         {
             base.performHoverAction(x, y);
-            this.hoverText = "";
+            this.hoverBox = null;
             int i = 0;
             foreach (var content in getContent())
             {
+                IEconEvent e = content.Item1;
                 Rectangle rect = content.Item2;
                 i++;
                 if ( rect.Contains(x, y) )
                 {
-                    this.hoverText = content.Item1.HoverText;
+                    if (e.AffectedItem > -1)
+                    {
+                        this.hoverBox = new EconEventHoverBox(e);
+                    }
                     break;
                 }
             }

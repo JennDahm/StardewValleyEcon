@@ -2,22 +2,28 @@
 {
     class EconEvent : IEconEvent
     {
-        public EconEvent(string headline, string hover)
+        public EconEvent(string headline, int item, int percent, int oldPrice)
         {
             this.Headline = headline;
-            this.HoverText = hover;
 
-            this.AffectedItem = StardewValley.Object.stone;
+            this.AffectedItem = item;
+            this.PercentChange = percent;
+            this.OldPrice = oldPrice;
         }
 
         public string Headline { get; }
 
-        public string HoverText { get; }
+        public int PercentChange { get; }
 
         public int AffectedItem { get; }
 
-        public int NewPrice { get; }
-
         public int OldPrice { get; }
+
+        public int NewPrice {
+            get
+            {
+                return OldPrice + (OldPrice * PercentChange) / 100;
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 ﻿namespace StardewEcon
 {
-    interface IEconEvent
+    public interface IEconEvent
     {
         string Headline { get; }
 
-        string HoverText { get; }
-
         int AffectedItem { get; }
+
+        int PercentChange { get; }
 
         int NewPrice { get; }
 

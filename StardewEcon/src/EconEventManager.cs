@@ -155,14 +155,14 @@ namespace StardewEcon
                         continue;
                     }
                     string trimmedLine = line.Trim();
-                    list.Add(new EconEvent(trimmedLine, "-"));
+                    list.Add(new EconEvent(trimmedLine, StardewValley.Object.topazIndex, -10, 100));
                 }
             }
 
             // If the file was empty or nonexistant, we need dummy text.
             if (list.Count == 0)
             {
-                list.Add(new EconEvent("Nothing to report.", ""));
+                list.Add(new EconEvent("Nothing to report.", -1, 0, 0));
             }
 
             return list;
