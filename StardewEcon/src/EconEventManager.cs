@@ -5,12 +5,12 @@ using System.IO;
 
 namespace StardewEcon
 {
-    class EconEventManager
+    public class EconEventManager
     {
         #region Private Fields
-        private IList<IEconEvent> monthlyEvents;
-        private IList<IEconEvent> biweeklyEvents;
-        private IList<IEconEvent> weeklyEvents;
+        private IList<EconEventFactory> monthlyEvents;
+        private IList<EconEventFactory> biweeklyEvents;
+        private IList<EconEventFactory> weeklyEvents;
 
         private List<IEconEvent> currentEvents;
         #endregion
@@ -41,7 +41,7 @@ namespace StardewEcon
          */
         public bool TryLoadPlayerEvents()
         {
-            // TODO
+            // TODO: Load player events
             return false;
         }
 
@@ -55,11 +55,12 @@ namespace StardewEcon
          */
         public IReadOnlyList<IEconEvent> GenerateNewEvents()
         {
+            Random rand = new Random();
             this.currentEvents = new List<IEconEvent>()
             {
-                RandomlySelectFromList(this.monthlyEvents),
-                RandomlySelectFromList(this.biweeklyEvents),
-                RandomlySelectFromList(this.weeklyEvents)
+                RandomlySelectFromList(this.monthlyEvents, rand).GenerateNewEvent(rand),
+                RandomlySelectFromList(this.biweeklyEvents, rand).GenerateNewEvent(rand),
+                RandomlySelectFromList(this.weeklyEvents, rand).GenerateNewEvent(rand)
             };
 
             this.ApplyEvents();
@@ -139,9 +140,9 @@ namespace StardewEcon
             this.weeklyEvents = this.LoadEventsFrom(@"config/weekly.txt");
         }
 
-        private IList<IEconEvent> LoadEventsFrom(string filename)
+        private IList<EconEventFactory> LoadEventsFrom(string filename)
         {
-            var list = new List<IEconEvent>();
+            var list = new List<EconEventFactory>();
             var filepath = Path.Combine(this.Helper.DirectoryPath, filename);
             var fileinfo = new FileInfo(filepath);
 
@@ -155,27 +156,28 @@ namespace StardewEcon
                         continue;
                     }
                     string trimmedLine = line.Trim();
-                    list.Add(new EconEvent(trimmedLine, StardewValley.Object.topazIndex, -10, 100));
+                    list.Add(new EconEventFactory(trimmedLine));
                 }
             }
 
             // If the file was empty or nonexistant, we need dummy text.
             if (list.Count == 0)
             {
-                list.Add(new EconEvent("Nothing to report.", -1, 0, 0));
+                list.Add(new EconEventFactory("Nothing to report."));
             }
 
             return list;
         }
 
-        private T RandomlySelectFromList<T>(IList<T> list)
+        private T RandomlySelectFromList<T>(IList<T> list, Random rand = null)
         {
             if ((list?.Count ?? 0) == 0)
             {
                 return default(T);
             }
+            rand = rand ?? new Random();
 
-            return list[new Random().Next(list.Count)];
+            return list[rand.Next(list.Count)];
         }
         #endregion
     }

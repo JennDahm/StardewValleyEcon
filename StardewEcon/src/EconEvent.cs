@@ -1,6 +1,6 @@
 ﻿namespace StardewEcon
 {
-    class EconEvent : IEconEvent
+    public class EconEvent : IEconEvent
     {
         public EconEvent(string headline, int item, int percent, int oldPrice)
         {

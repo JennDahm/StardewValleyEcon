@@ -26,6 +26,7 @@ appropriate file. To remove events, remove the specific line from the file.
 Each headline has blanks that can be filled in with locations or items. The
 following list describes what each means:
 
+* `%%` - Literal % character
 * `%1` - Location
 * `%2` - Crop
 
@@ -36,7 +37,8 @@ but their prices won't be affected.
 
 The file format is fairly hardy - the mod will ignore empty lines and lines
 filled with only whitespace (i.e. spaces), and any event without an item blank
-won't affect the price of any item.
+won't affect the price of any item. A loose % not followed by a number or % is
+interpreted as a literal % character.
 
 Keep in mind that headlines can only be so long before they're cut off in the
 news window.

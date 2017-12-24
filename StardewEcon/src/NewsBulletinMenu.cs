@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace StardewEcon
 {
-    class NewsBulletinMenu : IClickableMenu
+    public class NewsBulletinMenu : IClickableMenu
     {
         private int internalWidth;
         private int internalHeight;
