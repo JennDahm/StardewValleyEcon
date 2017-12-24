@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\EconEventHoverBox.cs" />
     <Compile Include="src\EconEventManager.cs" />
     <Compile Include="src\EconEvent.cs" />
     <Compile Include="src\IEconEvent.cs" />

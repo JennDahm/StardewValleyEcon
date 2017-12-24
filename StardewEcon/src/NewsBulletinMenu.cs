@@ -86,7 +86,7 @@ namespace StardewEcon
             // Draw hover text!
             if (!string.IsNullOrEmpty(this.hoverText))
             {
-                Utility.DrawHoverTextWithItem(b, "+20%", Game1.smallFont, StardewValley.Object.stone);
+                new EconEventHoverBox(StardewValley.Object.stone, 20).draw(b);
             }
         }
 

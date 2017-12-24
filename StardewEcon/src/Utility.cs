@@ -103,127 +103,11 @@ namespace StardewEcon
             return truncate;
         }
 
-        public static void DrawHoverTextWithItem(SpriteBatch batch, string text, SpriteFont font, int itemIndex = -1, float alpha = 1f)
-        {
-            if( batch == null || font == null )
-            {
-                return;
-            }
-
-            text = text ?? "";
-
-            Rectangle menuTextureSourceRect = new Rectangle(0, 256, 60, 60);
-
-            int margin = Game1.tileSize / 4;
-            int dividerWidth = Game1.tileSize / 4;
-
-            Vector2 textSize;
-            Rectangle hoverBoxBounds;
-            Rectangle spriteSourceRect = new Rectangle(0, 0, 0, 0);
-            Vector2 spriteSize = new Vector2(0, 0);
-
-            // Bounds generation
-            {
-                // Width/Height generation
-                textSize = font.MeasureString(text);
-                int width = Math.Max(0, (int)textSize.X);
-                int height = Math.Max(20 * 3 - margin * 2, (int)textSize.Y);
-
-                // If we're dealing with an item, we need to modify the width/height:
-                if (itemIndex > -1)
-                {
-                    spriteSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, itemIndex, 16, 16);
-                    spriteSize = new Vector2(spriteSourceRect.Width, spriteSourceRect.Height) * Game1.pixelZoom;
-                    width += (int)spriteSize.X + dividerWidth;
-                    height = Math.Max(height, (int)spriteSize.Y);
-                }
-
-                width += margin * 2;
-                height += margin * 2;
-
-                // X and Y generation
-                int x = Game1.getOldMouseX() + Game1.tileSize / 2;
-                int y = Game1.getOldMouseY() + Game1.tileSize / 2;
-
-                hoverBoxBounds = new Rectangle(x, y, width, height);
-
-                // Screen bounds checking:
-                Rectangle safeArea = StardewValley.Utility.getSafeArea();
-                CoerceInto(hoverBoxBounds, safeArea);
-            }
-
-            // Draw the hover text box
-            Utility.drawTextureBox(
-                batch,
-                texture: Game1.menuTexture,
-                sourceRect: menuTextureSourceRect,
-                destinationRect: hoverBoxBounds,
-                color: Color.White * alpha);
-            
-            // Draw the hovertext and its shadow
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                float x = hoverBoxBounds.X + margin;
-                float y = hoverBoxBounds.Y + (hoverBoxBounds.Height - textSize.Y) / 2;
-                batch.DrawString(font, text, new Vector2(x, y) + new Vector2(2f, 2f), Game1.textShadowColor * alpha);
-                batch.DrawString(font, text, new Vector2(x, y) + new Vector2(0f, 2f), Game1.textShadowColor * alpha);
-                batch.DrawString(font, text, new Vector2(x, y) + new Vector2(2f, 0f), Game1.textShadowColor * alpha);
-                batch.DrawString(font, text, new Vector2(x, y), Game1.textColor * 0.9f * alpha);
-            }
-
-            // Draw the item sprite
-            if (itemIndex > -1)
-            {
-                int x = hoverBoxBounds.X + margin + (int)textSize.X + dividerWidth;
-                int y = hoverBoxBounds.Y + (hoverBoxBounds.Height - (int)spriteSize.Y) / 2;
-                batch.Draw(
-                    texture: Game1.objectSpriteSheet,
-                    sourceRectangle: spriteSourceRect,
-                    destinationRectangle: new Rectangle(x, y, (int)spriteSize.X, (int)spriteSize.Y),
-                    color: Color.White);
-            }
-        }
-
-        /**
-         * <summary>Coerces the first rectangle into the second by modifying position, not size</summary>
-         * <remarks>Only actually checks the right and bottom bounds.</remarks>
-         * <returns>The coerced rectangle.</returns>
-         */
-        private static Rectangle CoerceInto(Rectangle toCoerce, Rectangle bounds)
-        {
-            // Make a copy so we don't modify the ones passed to us.
-            Rectangle coerced = new Rectangle(toCoerce.X, toCoerce.Y, toCoerce.Width, toCoerce.Height);
-
-            // Check right bound
-            if (coerced.Right > bounds.Right)
-            {
-                coerced.X = bounds.Right - coerced.Width;
-                // Why are we modifying Y? I don't know...
-                // I copied this from the decompiled game.
-                coerced.Y += Game1.tileSize / 4;
-            }
-            
-            // Check bottom bound
-            if (coerced.Bottom > bounds.Bottom)
-            {
-                // Why are we modifying X? I don't know...
-                // I copied this from the decompiled game.
-                coerced.X += Game1.tileSize / 4;
-                if (coerced.Right > bounds.Right)
-                {
-                    coerced.X = bounds.Right - coerced.Width;
-                }
-                coerced.Y = bounds.Bottom - coerced.Height;
-            }
-
-            return coerced;
-        }
-
         /**
          * <summary>Wrapper around IClickableMenu.drawTextureBox that lets us
          *  provide a destination rectangle rather than each parameter.</summary>
          */
-        private static void drawTextureBox(SpriteBatch batch, Rectangle destinationRect, Color color)
+        public static void drawTextureBox(SpriteBatch batch, Rectangle destinationRect, Color color)
         {
             Rectangle d = destinationRect;
             IClickableMenu.drawTextureBox(batch, d.X, d.Y, d.Width, d.Height, color);
@@ -233,7 +117,7 @@ namespace StardewEcon
          * <summary>Wrapper around IClickableMenu.drawTextureBox that lets us
          *  provide a destination rectangle rather than each parameter.</summary>
          */
-        private static void drawTextureBox(
+        public static void drawTextureBox(
             SpriteBatch batch,
             Texture2D texture,
             Rectangle sourceRect,
