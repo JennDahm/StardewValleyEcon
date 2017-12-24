@@ -21,8 +21,8 @@ namespace StardewEcon
         {
             // Set up our escape-number-to-type map.
             HeadlineTemplate.numToTypeMap = new Dictionary<int, Tuple<HeadlineTokenType, HeadlineTokenSubtype>>();
-            HeadlineTemplate.numToTypeMap.Add(0, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Location));
-            HeadlineTemplate.numToTypeMap.Add(1, Tuple.Create(HeadlineTokenType.Item, HeadlineTokenSubtype.Crop));
+            HeadlineTemplate.numToTypeMap.Add(1, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Location));
+            HeadlineTemplate.numToTypeMap.Add(2, Tuple.Create(HeadlineTokenType.Item, HeadlineTokenSubtype.Crop));
         }
 
         /**
@@ -247,7 +247,7 @@ namespace StardewEcon
             // Let's generate percent changes that are multiples of 5 between
             // -25% and +25%, inclusive.
             // This translates to an integer range between -5 and +5, inclusive.
-            return rand.Next(-5, 5 + 1);
+            return rand.Next(-5, 5 + 1) * 5;
         }
 
         /**

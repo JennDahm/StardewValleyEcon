@@ -1,2 +1,2 @@
-An earthquake destroyed the %3 farm near %0.
-Halelujah it's raining %3!
+An earthquake destroyed the %2 farm near %1.
+Halelujah it's raining %2!
