@@ -1,12 +1,11 @@
 ﻿# Basic Functionality
 
-* Parse events properly and generate items and price changes appropriately.
-  * Figure out how to configure list of items, locations, etc. Should we use plain
-    text configuration files like with event headlines?
-  * Figure out how to configure price ranges and probabilities. Different per item,
-    or per event duration?
-  * Figure out how we seed the RNG; system time every use for complete randomness?
-    Game day + Player ID for player-based determinism?
+* Figure out how to configure list of items, locations, etc. Should we use plain
+  text configuration files like with event headlines?
+* Figure out how to configure price ranges and probabilities. Different per item,
+  or per event duration?
+* Figure out how we seed the RNG; system time every use for complete randomness?
+  Game day + Player ID for player-based determinism?
 * Figure out how to trigger the news bulletin menu when interacting with the
   sign outside Pierre's shop.
 * Figure out how we store and retrieve current events from player save.

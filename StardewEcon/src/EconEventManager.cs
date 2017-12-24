@@ -8,11 +8,11 @@ namespace StardewEcon
     public class EconEventManager
     {
         #region Private Fields
-        private IList<EconEventFactory> monthlyEvents;
-        private IList<EconEventFactory> biweeklyEvents;
-        private IList<EconEventFactory> weeklyEvents;
+        private IList<HeadlineTemplate> monthlyEvents;
+        private IList<HeadlineTemplate> biweeklyEvents;
+        private IList<HeadlineTemplate> weeklyEvents;
 
-        private List<IEconEvent> currentEvents;
+        private List<EconEvent> currentEvents;
         #endregion
 
         #region Constructors
@@ -29,7 +29,7 @@ namespace StardewEcon
 
         public IMonitor Monitor { get; }
 
-        public IReadOnlyList<IEconEvent> CurrentEvents => this.currentEvents;
+        public IReadOnlyList<EconEvent> CurrentEvents => this.currentEvents;
         #endregion
 
         #region Public Functions
@@ -53,10 +53,10 @@ namespace StardewEcon
          * 
          * <returns>The new set generated. This is also available via the CurrentEvents property.</returns>
          */
-        public IReadOnlyList<IEconEvent> GenerateNewEvents()
+        public IReadOnlyList<EconEvent> GenerateNewEvents()
         {
             Random rand = new Random();
-            this.currentEvents = new List<IEconEvent>()
+            this.currentEvents = new List<EconEvent>()
             {
                 RandomlySelectFromList(this.monthlyEvents, rand).GenerateNewEvent(rand),
                 RandomlySelectFromList(this.biweeklyEvents, rand).GenerateNewEvent(rand),
@@ -140,9 +140,9 @@ namespace StardewEcon
             this.weeklyEvents = this.LoadEventsFrom(@"config/weekly.txt");
         }
 
-        private IList<EconEventFactory> LoadEventsFrom(string filename)
+        private IList<HeadlineTemplate> LoadEventsFrom(string filename)
         {
-            var list = new List<EconEventFactory>();
+            var list = new List<HeadlineTemplate>();
             var filepath = Path.Combine(this.Helper.DirectoryPath, filename);
             var fileinfo = new FileInfo(filepath);
 
@@ -163,14 +163,14 @@ namespace StardewEcon
                         continue;
                     }
 
-                    list.Add(new EconEventFactory(trimmedLine));
+                    list.Add(new HeadlineTemplate(trimmedLine));
                 }
             }
 
             // If the file was empty or nonexistant, we need dummy text.
             if (list.Count == 0)
             {
-                list.Add(new EconEventFactory("Nothing to report."));
+                list.Add(new HeadlineTemplate("Nothing to report."));
             }
 
             return list;

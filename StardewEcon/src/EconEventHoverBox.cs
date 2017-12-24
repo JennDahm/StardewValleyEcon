@@ -7,7 +7,7 @@ namespace StardewEcon
 {
     public class EconEventHoverBox
     {
-        public EconEventHoverBox(IEconEvent e)
+        public EconEventHoverBox(EconEvent e)
         {
             this.ItemAffected = e.AffectedItem;
             this.PercentChange = e.PercentChange;

@@ -46,11 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\EconEventFactory.cs" />
+    <Compile Include="src\HeadlineTemplate.cs" />
     <Compile Include="src\EconEventHoverBox.cs" />
     <Compile Include="src\EconEventManager.cs" />
     <Compile Include="src\EconEvent.cs" />
-    <Compile Include="src\IEconEvent.cs" />
     <Compile Include="src\ModEntry.cs" />
     <Compile Include="src\NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

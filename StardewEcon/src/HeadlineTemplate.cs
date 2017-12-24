@@ -5,24 +5,24 @@ using System.Text.RegularExpressions;
 
 namespace StardewEcon
 {
-    public class EconEventFactory
+    public class HeadlineTemplate
     {
         static private Dictionary<int, Tuple<HeadlineTokenType, HeadlineTokenSubtype>> numToTypeMap;
 
         private readonly HeadlineToken[] headlineTemplate;
 
-        public EconEventFactory(string headlineTemplate)
+        public HeadlineTemplate(string headlineTemplate)
         {
             this.headlineTemplate = this.ParseHeadlineTemplate(headlineTemplate);
         }
 
         // Static initializer
-        static EconEventFactory()
+        static HeadlineTemplate()
         {
             // Set up our escape-number-to-type map.
-            EconEventFactory.numToTypeMap = new Dictionary<int, Tuple<HeadlineTokenType, HeadlineTokenSubtype>>();
-            EconEventFactory.numToTypeMap.Add(0, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Location));
-            EconEventFactory.numToTypeMap.Add(1, Tuple.Create(HeadlineTokenType.Item, HeadlineTokenSubtype.Crop));
+            HeadlineTemplate.numToTypeMap = new Dictionary<int, Tuple<HeadlineTokenType, HeadlineTokenSubtype>>();
+            HeadlineTemplate.numToTypeMap.Add(0, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Location));
+            HeadlineTemplate.numToTypeMap.Add(1, Tuple.Create(HeadlineTokenType.Item, HeadlineTokenSubtype.Crop));
         }
 
         /**
