@@ -46,13 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EconEventManager.cs" />
-    <Compile Include="EconEvent.cs" />
-    <Compile Include="IEconEvent.cs" />
-    <Compile Include="ModEntry.cs" />
-    <Compile Include="NewsBulletinMenu.cs" />
+    <Compile Include="src\EconEventManager.cs" />
+    <Compile Include="src\EconEvent.cs" />
+    <Compile Include="src\IEconEvent.cs" />
+    <Compile Include="src\ModEntry.cs" />
+    <Compile Include="src\NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility.cs" />
+    <Compile Include="src\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
