@@ -155,7 +155,14 @@ namespace StardewEcon
                     {
                         continue;
                     }
+
+                    // Trim; Skip comments
                     string trimmedLine = line.Trim();
+                    if(line[0] == '#')
+                    {
+                        continue;
+                    }
+
                     list.Add(new EconEventFactory(trimmedLine));
                 }
             }

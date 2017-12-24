@@ -38,7 +38,11 @@ but their prices won't be affected.
 The file format is fairly hardy - the mod will ignore empty lines and lines
 filled with only whitespace (i.e. spaces), and any event without an item blank
 won't affect the price of any item. A loose % not followed by a number or % is
-interpreted as a literal % character.
+interpreted as a literal % character. Extra whitespace on either end of the line
+will be trimmed before display.
+
+You can also insert comments into the files. Any line starting with # will be
+ignored.
 
 Keep in mind that headlines can only be so long before they're cut off in the
 news window.
