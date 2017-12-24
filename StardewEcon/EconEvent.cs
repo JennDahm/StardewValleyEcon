@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StardewEcon
+﻿namespace StardewEcon
 {
     class EconEvent : IEconEvent
     {
@@ -12,14 +6,18 @@ namespace StardewEcon
         {
             this.Headline = headline;
             this.HoverText = hover;
-        }
 
-        public void RandomlyInitialize()
-        {
+            this.AffectedItem = StardewValley.Object.stone;
         }
 
         public string Headline { get; }
 
         public string HoverText { get; }
+
+        public int AffectedItem { get; }
+
+        public int NewPrice { get; }
+
+        public int OldPrice { get; }
     }
 }

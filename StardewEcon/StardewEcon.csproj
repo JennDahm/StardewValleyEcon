@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EconEventManager.cs" />
     <Compile Include="EconEvent.cs" />
     <Compile Include="IEconEvent.cs" />
     <Compile Include="ModEntry.cs" />

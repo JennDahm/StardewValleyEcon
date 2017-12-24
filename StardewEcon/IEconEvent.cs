@@ -2,10 +2,14 @@
 {
     interface IEconEvent
     {
-        void RandomlyInitialize();
-
         string Headline { get; }
 
         string HoverText { get; }
+
+        int AffectedItem { get; }
+
+        int NewPrice { get; }
+
+        int OldPrice { get; }
     }
 }
