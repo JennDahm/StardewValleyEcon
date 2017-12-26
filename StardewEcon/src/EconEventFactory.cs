@@ -29,25 +29,42 @@ namespace StardewEcon
     public class EconEventFactory
     {
         #region Constant Configuration File Locations
-        public const string LocationsFilePath = "config/locations.txt";
-        public const string CropsFilePath = "config/crops.txt";
+        public const string MonthlyEventsFilePath = @"config/monthly.txt";
+        public const string BiweeklyEventsFilePath = @"config/biweekly.txt";
+        public const string WeeklyEventsFilePath = @"config/weekly.txt";
+
+        public const string LocationsFilePath = @"config/locations.txt";
+        public const string CropsFilePath = @"config/crops.txt";
         #endregion
 
         #region Static Content Lists
+        private static IReadOnlyDictionary<EventType, IReadOnlyList<HeadlineTemplate>> _EventTemplates;
+
         private static IReadOnlyList<string> _Locations;
         private static IReadOnlyList<int> _Crops;
         #endregion
 
         #region Instance Fields
         private Random rand;
+        private IReadOnlyList<HeadlineTemplate> templates;
+
+        private EventType eventType;
+        private SDate dateCreated;
         #endregion
 
         private static bool _Initialized = false;
 
         private EconEventFactory(EventType type, SDate date)
         {
-            this.rand = new Random(GetRNGSeed(type, date));
+            this.eventType = type;
+            this.templates = _EventTemplates[type];
+
+            this.ResetToDate(date);
         }
+
+        public EventType EventType => this.eventType;
+
+        public SDate Date => this.dateCreated;
 
         #region Public Static Functions
         /**
@@ -62,8 +79,15 @@ namespace StardewEcon
         {
             if (!_Initialized)
             {
-                EconEventFactory._Locations = LoadStringList(Path.Combine(modDir, LocationsFilePath));
-                EconEventFactory._Crops = LoadItemList(Path.Combine(modDir, CropsFilePath));
+                var eventTemplates = new Dictionary<EventType, IReadOnlyList<HeadlineTemplate>>();
+                eventTemplates.Add(EventType.Monthly, LoadEventTemplateList(Path.Combine(modDir, MonthlyEventsFilePath)));
+                eventTemplates.Add(EventType.Biweekly, LoadEventTemplateList(Path.Combine(modDir, BiweeklyEventsFilePath)));
+                eventTemplates.Add(EventType.Weekly, LoadEventTemplateList(Path.Combine(modDir, WeeklyEventsFilePath)));
+                _EventTemplates = eventTemplates;
+
+
+                _Locations = LoadStringList(Path.Combine(modDir, LocationsFilePath));
+                _Crops = LoadItemList(Path.Combine(modDir, CropsFilePath));
 
                 _Initialized = true;
             }
@@ -72,7 +96,9 @@ namespace StardewEcon
         /**
          * <summary>Create a new factory for the given event type on the given date.</summary>
          * <remarks>
-         *  A new factory should be created for every headline you generate.
+         *  For deteminism, a new factory can be created for every headline that
+         *  you generate, or you can use the <see cref="ResetRNG()"/> or <see cref="ResetToDate(SDate)"/>
+         *  methods to give a level of determinism to the randomness.
          * </remarks>
          * 
          * <param name="type">The type of event to be generated.</param>
@@ -88,30 +114,77 @@ namespace StardewEcon
         }
         #endregion
 
+        #region Public Functions
         /**
-         * <summary>From the given list of templates, pick one and generate content for it.</summary>
+         * <summary>Generates a new, randomly generated <see cref="EconEvent"/>.</summary>
          * <remarks>
-         *  DEPRECATED. This is only in use as a bridge from the EconEventManager
-         *  generating RNG seeds and loading templates to this class handling
-         *  those operations.
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will return an entirely different <see cref="EconEvent"/>.
          * </remarks>
          * 
-         * <param name="templates">The list of templates to select from.</param>
          * <returns>A fully generated EconEvent.</returns>
          */
-        public EconEvent GenerateEventFromTemplates(IReadOnlyList<HeadlineTemplate> templates)
+        public EconEvent GenerateRandomEvent()
         {
-            if( templates == null )
-            {
-                return null;
-            }
-
-            return RandomlySelectFromList(templates, this.rand)?.GenerateNewEvent(this.rand);
+            return RandomlySelectFromList(this.templates, this.rand)?.GenerateNewEvent(this.rand);
         }
 
-        #region Private Static Setup Functions
-        public static void LoadGenerationLists(string modLocation)
+        /**
+         * <summary>Resets the internal RNG to its original state when the factory was created.</summary>
+         * <remarks>
+         *  This can be used to force a factory to generate the same event
+         *  multiple times without creating a new one every time.
+         * </remarks>
+         * 
+         * <returns>The same factory itself.</returns>
+         */
+        public EconEventFactory ResetRNG()
         {
+            this.rand = new Random(GetRNGSeed(this.eventType, this.dateCreated));
+            return this;
+        }
+
+        /**
+         * <summary>Resets the factory to its original state as though it were created with the given date.</summary>
+         * <remarks>
+         *  This can be used to avoid recreating factories every time new events
+         *  need to be generated.
+         * </remarks>
+         * 
+         * <param name="date">The date to reset to. (Default: current date)</param>
+         * <returns>The same factory itself.</returns>
+         */
+        public EconEventFactory ResetToDate(SDate date = null)
+        {
+            this.dateCreated = date ?? SDate.Now();
+            return ResetRNG();
+        }
+        #endregion
+
+        #region Private Static Setup Functions
+        private static List<HeadlineTemplate> LoadEventTemplateList(string absFilepath)
+        {
+            var list = new List<HeadlineTemplate>();
+            var fileinfo = new FileInfo(absFilepath);
+            
+            if (fileinfo.Exists)
+            {
+                // Select all nonempty lines that are not comments.
+                list = File.ReadLines(absFilepath)
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim())
+                    .Where(s => s[0] != '#')
+                    .Select(s => new HeadlineTemplate(s))
+                    .ToList();
+            }
+
+            // If the file was empty or nonexistant, we need dummy text.
+            if (list.Count == 0)
+            {
+                list.Add(new HeadlineTemplate("Nothing to report."));
+            }
+
+            return list;
         }
 
         private static List<string> LoadStringList(string absFilepath)

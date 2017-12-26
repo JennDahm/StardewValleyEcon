@@ -1,19 +1,23 @@
-﻿using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Linq;
+using StardewModdingAPI;
 
 using static StardewEcon.EconEvent;
+using StardewModdingAPI.Utilities;
 
 namespace StardewEcon
 {
     public class EconEventManager
     {
+        private static readonly EventType[] _EventTypes = 
+        {
+            EventType.Monthly,
+            EventType.Biweekly,
+            EventType.Weekly
+        };
+
         #region Private Fields
-        private IReadOnlyList<HeadlineTemplate> monthlyEvents;
-        private IReadOnlyList<HeadlineTemplate> biweeklyEvents;
-        private IReadOnlyList<HeadlineTemplate> weeklyEvents;
+        private IReadOnlyDictionary<EventType, EconEventFactory> factories;
 
         private List<EconEvent> currentEvents;
         #endregion
@@ -23,9 +27,14 @@ namespace StardewEcon
         {
             this.Helper = helper;
             this.Monitor = monitor;
-            this.LoadEventLists();
+
             // TODO: Move this call to ModEntry?
             EconEventFactory.LoadContentFiles(this.Helper.DirectoryPath);
+
+            // Note that we absolutely have to create a date, because this
+            // constructor may be called before the game is loaded, and
+            // SDate.Now() fails during that time period.
+            this.factories = _EventTypes.ToDictionary(t => t, t => EconEventFactory.Create(t, new SDate(1, "spring")));
         }
         #endregion
 
@@ -61,12 +70,10 @@ namespace StardewEcon
         public IReadOnlyList<EconEvent> GenerateNewEvents()
         {
             // Generate the events.
-            this.currentEvents = new List<EconEvent>()
-            {
-                EconEventFactory.Create(EventType.Monthly).GenerateEventFromTemplates(this.monthlyEvents),
-                EconEventFactory.Create(EventType.Biweekly).GenerateEventFromTemplates(this.biweeklyEvents),
-                EconEventFactory.Create(EventType.Weekly).GenerateEventFromTemplates(this.weeklyEvents),
-            };
+            this.currentEvents =
+                _EventTypes.Select(t => this.factories[t])
+                .Select(f => f.ResetToDate().GenerateRandomEvent())
+                .ToList();
 
             this.ApplyEvents();
 
@@ -135,51 +142,6 @@ namespace StardewEcon
         #endregion
 
         #region Private Functions
-        /**
-         * <summary>Loads and parses events from the mod configuration folder.</summary>
-         */
-        private void LoadEventLists()
-        {
-            this.monthlyEvents = this.LoadEventsFrom(@"config/monthly.txt");
-            this.biweeklyEvents = this.LoadEventsFrom(@"config/biweekly.txt");
-            this.weeklyEvents = this.LoadEventsFrom(@"config/weekly.txt");
-        }
-
-        private List<HeadlineTemplate> LoadEventsFrom(string filename)
-        {
-            var list = new List<HeadlineTemplate>();
-            var filepath = Path.Combine(this.Helper.DirectoryPath, filename);
-            var fileinfo = new FileInfo(filepath);
-
-            // Make sure the file exists before reading from it
-            if (fileinfo.Exists)
-            {
-                foreach (string line in File.ReadLines(filepath))
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    // Trim; Skip comments
-                    string trimmedLine = line.Trim();
-                    if(line[0] == '#')
-                    {
-                        continue;
-                    }
-
-                    list.Add(new HeadlineTemplate(trimmedLine));
-                }
-            }
-
-            // If the file was empty or nonexistant, we need dummy text.
-            if (list.Count == 0)
-            {
-                list.Add(new HeadlineTemplate("Nothing to report."));
-            }
-
-            return list;
-        }
         #endregion
     }
 }
