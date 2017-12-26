@@ -1,4 +1,5 @@
 ﻿using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,12 +56,17 @@ namespace StardewEcon
          */
         public IReadOnlyList<EconEvent> GenerateNewEvents()
         {
-            Random rand = new Random();
+            // Generate the RNG seeds
+            Random monthRNG  = new Random(GetRNGSeed(EventType.Monthly, SDate.Now()));
+            Random biweekRNG = new Random(GetRNGSeed(EventType.Biweekly, SDate.Now()));
+            Random weekRNG   = new Random(GetRNGSeed(EventType.Weekly, SDate.Now()));
+
+            // Generate the events.
             this.currentEvents = new List<EconEvent>()
             {
-                RandomlySelectFromList(this.monthlyEvents, rand).GenerateNewEvent(rand),
-                RandomlySelectFromList(this.biweeklyEvents, rand).GenerateNewEvent(rand),
-                RandomlySelectFromList(this.weeklyEvents, rand).GenerateNewEvent(rand)
+                RandomlySelectFromList(this.monthlyEvents, monthRNG).GenerateNewEvent(monthRNG),
+                RandomlySelectFromList(this.biweeklyEvents, biweekRNG).GenerateNewEvent(biweekRNG),
+                RandomlySelectFromList(this.weeklyEvents, weekRNG).GenerateNewEvent(weekRNG)
             };
 
             this.ApplyEvents();
@@ -185,6 +191,61 @@ namespace StardewEcon
             rand = rand ?? new Random();
 
             return list[rand.Next(list.Count)];
+        }
+
+        /**
+         * <summary>Generates a deterministic RNG seed based on the game date and ID.</summary>
+         * <remarks>
+         *  In order to keep the event types as independent as possible, each
+         *  type has a separately generated RNG seed. Each seed is created by
+         *  left shifting the year number by a small amount, bitwise ORing
+         *  another number (A), and then bitwise XORing the entire result by
+         *  the player's game ID, giving a unique seed for each week on each
+         *  playthrough.
+         *  
+         *  For monthly events, the number (A) is a number 0-3 representing
+         *  the season number. For biweekly events, the number (A) is a number
+         *  0-1 representing which half of the month we're in. For weekly events,
+         *  the number (A) is a number 0-3 representing which week of the month
+         *  we're in.
+         *  
+         *  The game ID is retrieved via the expression
+         *  <code>StardewValley.Game1.uniqueIDForThisGame</code>
+         * </remarks>
+         * 
+         * <param name="type">The type of event being generated.</param>
+         * <param name="date">The date of generation.</param>
+         * <returns>A deterministicly generated RNG seed.</returns>
+         */
+        private int GetRNGSeed(EventType type, SDate date)
+        {
+            int year = date.Year;
+            int gameID = (int)StardewValley.Game1.uniqueIDForThisGame;
+
+            switch(type)
+            {
+                case EventType.Monthly:
+                    int month = date.SeasonAsInt(); // range: 0-3 (2 bits)
+                    return ((year << 2) | month) ^ gameID;
+
+                case EventType.Biweekly:
+                    int biweek = date.Week() / 2; // range: 0-1 (1 bit)
+                    return ((year << 1) | biweek) ^ gameID;
+
+                case EventType.Weekly:
+                    int week = date.Week(); // range: 0-3 (2 bits)
+                    return ((year << 2) | week) ^ gameID;
+
+                default:
+                    return 0; // TODO: Some kind of error?
+            }
+        }
+
+        private enum EventType
+        {
+            Monthly,
+            Biweekly,
+            Weekly
         }
         #endregion
     }
