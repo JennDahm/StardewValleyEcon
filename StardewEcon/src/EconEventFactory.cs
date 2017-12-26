@@ -28,13 +28,16 @@ namespace StardewEcon
      */
     public class EconEventFactory : IHeadlineContentProvider
     {
-        #region Constant Configuration File Locations
+        #region Configuration File Constants
         public const string MonthlyEventsFilePath = @"config/monthly.txt";
         public const string BiweeklyEventsFilePath = @"config/biweekly.txt";
         public const string WeeklyEventsFilePath = @"config/weekly.txt";
 
         public const string LocationsFilePath = @"config/locations.txt";
+        public const string DefaultLocation = "Zuzu City";
+
         public const string CropsFilePath = @"config/crops.txt";
+        public const int DefaultCrop = 400; // Strawberry
         #endregion
 
         #region Static Content Lists
@@ -86,18 +89,8 @@ namespace StardewEcon
                 _EventTemplates = eventTemplates;
 
 
-                _Locations = LoadStringList(Path.Combine(modDir, LocationsFilePath));
-                _Crops = LoadItemList(Path.Combine(modDir, CropsFilePath));
-
-                // Safeguards against missing/empty files:
-                if (_Locations.Count == 0)
-                {
-                    _Locations = new List<string>() { "Zuzu City" };
-                }
-                if (_Crops.Count == 0)
-                {
-                    _Crops = new List<int>() { StardewValley.Object.stone };
-                }
+                _Locations = LoadStringList(Path.Combine(modDir, LocationsFilePath), DefaultLocation);
+                _Crops = LoadItemList(Path.Combine(modDir, CropsFilePath), DefaultCrop);
 
                 _Initialized = true;
             }
@@ -189,71 +182,92 @@ namespace StardewEcon
         #endregion
 
         #region Private Static Setup Functions
+        /**
+         * <summary>Loads a list of event templates from the given file.</summary>
+         * <param name="absFilepath">The absolute filepath to the file to load.</param>
+         */
         private static List<HeadlineTemplate> LoadEventTemplateList(string absFilepath)
         {
-            var list = new List<HeadlineTemplate>();
-            var fileinfo = new FileInfo(absFilepath);
-            
-            if (fileinfo.Exists)
-            {
-                // Select all nonempty lines that are not comments.
-                list = File.ReadLines(absFilepath)
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                    .Select(s => s.Trim())
-                    .Where(s => s[0] != '#')
-                    .Select(s => new HeadlineTemplate(s))
-                    .ToList();
-            }
-
-            // If the file was empty or nonexistant, we need dummy text.
-            if (list.Count == 0)
-            {
-                list.Add(new HeadlineTemplate("Nothing to report."));
-            }
-
-            return list;
+            return LoadSimpleList(
+                absFilepath,
+                new HeadlineTemplate("Nothing to report."),
+                s => new HeadlineTemplate(s),
+                t => true);
         }
 
-        private static List<string> LoadStringList(string absFilepath)
+        /**
+         * <summary>Loads a list of basic strings from the given file.</summary>
+         * <param name="absFilepath">The absolute filepath to the file to load.</param>
+         * <param name="defaultIfEmpty">The string to use if the file is empty/nonexistant.</param>
+         */
+        private static List<string> LoadStringList(string absFilepath, string defaultIfEmpty)
         {
-            var fileinfo = new FileInfo(absFilepath);
-
-            if (!fileinfo.Exists)
-            {
-                return new List<String>();
-            }
-
-            // Select all nonempty lines that are not comments.
-            return File.ReadLines(absFilepath)
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Trim())
-                .Where(s => s[0] != '#')
-                .ToList();
+            return LoadSimpleList(
+                absFilepath,
+                defaultIfEmpty,
+                s => s,
+                s => true);
         }
 
-        private static List<int> LoadItemList(string absFilepath)
+        /**
+         * <summary>Loads a list of item IDs from the given file.</summary>
+         * <param name="absFilepath">The absolute filepath to the file to load.</param>
+         * <param name="defaultIfEmpty">The item ID to use if the file is empty/nonexistant.</param>
+         */
+        private static List<int> LoadItemList(string absFilepath, int defaultIfEmpty)
         {
-            var fileinfo = new FileInfo(absFilepath);
-
-            if (!fileinfo.Exists)
-            {
-                return new List<int>();
-            }
-
-            // Select all nonempty lines that are not comments and can
-            // parse to non-negative integers.
-            return File.ReadLines(absFilepath)
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Trim())
-                .Where(s => s[0] != '#')
-                .Select(s =>
+            return LoadSimpleList(
+                absFilepath,
+                defaultIfEmpty,
+                s =>
                 {
                     int result = -1;
                     int.TryParse(s, out result);
                     return result;
-                })
-                .Where(i => 0 <= i)
-                .ToList();
+                },
+                i => 0 <= i);
+        }
+
+        /**
+         * <summary>Loads a simple line-by-line list from a file.</summary>
+         * <remarks>
+         *  Several of our files can be reduced to this same, simple line-by-line
+         *  format. Rather than duplicating code, we can centralize it here.
+         *  
+         *  The filter can be used with the translator when it's possible to
+         *  have invalid values.
+         * </remarks>
+         * 
+         * <param name="absFilepath">The absolute filepath to the file to load.</param>
+         * <param name="defaultIfEmpty">The default value to put into the list if the file does not exist or is empty.</param>
+         * <param name="translator">A translator from string format to the real value.</param>
+         * <param name="filter">A filter on the translated values - true to keep, false to skip.</param>
+         */
+        private static List<T> LoadSimpleList<T>(string absFilepath, T defaultIfEmpty, Func<string, T> translator, Func<T, bool> filter)
+        {
+            var fileinfo = new FileInfo(absFilepath);
+
+            List<T> list = new List<T>();
+            if (fileinfo.Exists)
+            {
+
+                // Select all nonempty lines that are not comments and pass the
+                // given filter.
+                list = File.ReadLines(absFilepath)
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim())
+                    .Where(s => s[0] != '#')
+                    .Select(translator)
+                    .Where(filter)
+                    .ToList();
+            }
+
+            // Safeguard against missing/empty files:
+            if (list.Count == 0)
+            {
+                list.Add(defaultIfEmpty);
+            }
+            return list;
         }
         #endregion
 
