@@ -25,5 +25,16 @@
                 return OldPrice + (OldPrice * PercentChange) / 100;
             }
         }
+        
+        /**
+         * The EconEvent doesn't itself need to know what type it is, but other
+         * classes will find this helpful.
+         */
+        public enum EventType
+        {
+            Monthly,
+            Biweekly,
+            Weekly
+        }
     }
 }
