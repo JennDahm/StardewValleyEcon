@@ -34,9 +34,8 @@ namespace StardewEcon
          * <param name="rand">The RNG to use to generate this event. (Default: a brand new one)</param>
          * <returns>An event based on this template.</returns>
          */
-        public EconEvent GenerateNewEvent(Random rand = null)
+        public EconEvent GenerateNewEvent(IHeadlineContentProvider rng)
         {
-            rand = rand ?? new Random();
             StringBuilder builder = new StringBuilder();
             int affectedItem = -1;
             int oldPrice = 0;
@@ -49,7 +48,7 @@ namespace StardewEcon
                         // Generate an item, whatever kind.
                         // If we haven't yet generated an item, select that to
                         // be the item affected by this event.
-                        int item = GenerateItem(token.subtype, rand);
+                        int item = GenerateItem(token.subtype, rng);
                         if(affectedItem == -1)
                         {
                             affectedItem = item;
@@ -61,7 +60,7 @@ namespace StardewEcon
                     }
                     case HeadlineTokenType.Other:
                     {
-                        builder.Append(GenerateOther(token.subtype, rand));
+                        builder.Append(GenerateOther(token.subtype, rng));
                         break;
                     }
                     case HeadlineTokenType.String:
@@ -72,7 +71,7 @@ namespace StardewEcon
                 }
             }
 
-            int percent = GeneratePercentChange(affectedItem, rand);
+            int percent = GeneratePercentChange(affectedItem, rng.GetRNG());
             
             return new EconEvent(builder.ToString(), affectedItem, percent, oldPrice);
         }
@@ -184,13 +183,13 @@ namespace StardewEcon
          * <seealso cref="HeadlineTokenType"/>
          * <seealso cref="HeadlineTokenSubtype"/>
          */
-        private int GenerateItem(HeadlineTokenSubtype type, Random rand)
+        private int GenerateItem(HeadlineTokenSubtype type, IHeadlineContentProvider rng)
         {
             // TODO
             switch(type)
             {
                 case HeadlineTokenSubtype.Crop:
-                    break;
+                    return rng.GetRandomCrop();
                 case HeadlineTokenSubtype.Artisan:
                     break;
                 case HeadlineTokenSubtype.Mineral:
@@ -215,13 +214,13 @@ namespace StardewEcon
          * <seealso cref="HeadlineTokenType"/>
          * <seealso cref="HeadlineTokenSubtype"/>
          */
-        private string GenerateOther(HeadlineTokenSubtype type, Random rand)
+        private string GenerateOther(HeadlineTokenSubtype type, IHeadlineContentProvider rng)
         {
             // TODO
             switch(type)
             {
                 case HeadlineTokenSubtype.Location:
-                    break;
+                    return rng.GetRandomLocation();
                 default:
                     break;
             }

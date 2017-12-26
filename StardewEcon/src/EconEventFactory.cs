@@ -26,7 +26,7 @@ namespace StardewEcon
      *  </code>
      * </example>
      */
-    public class EconEventFactory
+    public class EconEventFactory : IHeadlineContentProvider
     {
         #region Constant Configuration File Locations
         public const string MonthlyEventsFilePath = @"config/monthly.txt";
@@ -89,6 +89,16 @@ namespace StardewEcon
                 _Locations = LoadStringList(Path.Combine(modDir, LocationsFilePath));
                 _Crops = LoadItemList(Path.Combine(modDir, CropsFilePath));
 
+                // Safeguards against missing/empty files:
+                if (_Locations.Count == 0)
+                {
+                    _Locations = new List<string>() { "Zuzu City" };
+                }
+                if (_Crops.Count == 0)
+                {
+                    _Crops = new List<int>() { StardewValley.Object.stone };
+                }
+
                 _Initialized = true;
             }
         }
@@ -126,7 +136,7 @@ namespace StardewEcon
          */
         public EconEvent GenerateRandomEvent()
         {
-            return RandomlySelectFromList(this.templates, this.rand)?.GenerateNewEvent(this.rand);
+            return RandomlySelectFromList(this.templates)?.GenerateNewEvent(this);
         }
 
         /**
@@ -159,6 +169,23 @@ namespace StardewEcon
             this.dateCreated = date ?? SDate.Now();
             return ResetRNG();
         }
+
+        #region IHeadlineContentProvider implementation
+        public Random GetRNG()
+        {
+            return this.rand;
+        }
+
+        public string GetRandomLocation()
+        {
+            return RandomlySelectFromList(_Locations);
+        }
+
+        public int GetRandomCrop()
+        {
+            return RandomlySelectFromList(_Crops);
+        }
+        #endregion
         #endregion
 
         #region Private Static Setup Functions
@@ -287,15 +314,14 @@ namespace StardewEcon
             }
         }
 
-        private T RandomlySelectFromList<T>(IReadOnlyList<T> list, Random rand = null)
+        private T RandomlySelectFromList<T>(IReadOnlyList<T> list)
         {
             if ((list?.Count ?? 0) == 0)
             {
                 return default(T);
             }
-            rand = rand ?? new Random();
 
-            return list[rand.Next(list.Count)];
+            return list[this.rand.Next(list.Count)];
         }
         #endregion
     }

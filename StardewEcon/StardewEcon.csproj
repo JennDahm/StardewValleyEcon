@@ -87,6 +87,7 @@
     <Compile Include="src\EconEventHoverBox.cs" />
     <Compile Include="src\EconEventManager.cs" />
     <Compile Include="src\EconEvent.cs" />
+    <Compile Include="src\IHeadlineContentProvider.cs" />
     <Compile Include="src\ModEntry.cs" />
     <Compile Include="src\NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
