@@ -22,9 +22,10 @@ namespace StardewEcon
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            eventManager = new EconEventManager(this.Helper, this.Monitor);
-            
+            // Load static content
+            EconEventFactory.LoadContentFiles(this.Helper.DirectoryPath);
 
+            // Set up hooks
             SaveEvents.AfterLoad += SaveEvents_AfterLoad;
             SaveEvents.AfterReturnToTitle += SaveEvents_AfterReturnToTitle;
             TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
@@ -69,12 +70,9 @@ namespace StardewEcon
         {
             this.Monitor.Log($"Loaded save for {Game1.player.name}.", LogLevel.Info);
 
-            // Attempt to load events for the player.
-            // If we can't do that, generate new events.
-            if( !this.eventManager.TryLoadPlayerEvents() )
-            {
-                this.eventManager.GenerateNewEvents();
-            }
+            // Create the event manager and load events for the player.
+            this.eventManager = new EconEventManager(this.Helper, this.Monitor);
+            this.eventManager.LoadPlayerEvents();
         }
 
         private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)

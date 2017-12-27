@@ -303,7 +303,7 @@ namespace StardewEcon
              * <remarks>
              *  The subtype parameter of the HeadlineToken struct describes
              *  specifically what type of item. Acceptable values are as follows:
-             *  <list type="ul">
+             *  <list type="bullet">
              *      <item><see cref="HeadlineTokenSubtype.Crop"/></item>
              *      <item><see cref="HeadlineTokenSubtype.Artisan"/></item>
              *      <item><see cref="HeadlineTokenSubtype.Mineral"/></item>
@@ -320,7 +320,7 @@ namespace StardewEcon
              *  The subtype parameter of the HeadlineToken struct describes
              *  specifically what type of other parameter. Acceptable values are
              *  as follows:
-             *  <list type="ul">
+             *  <list type="bullet">
              *      <item><see cref="HeadlineTokenSubtype.Location"/></item>
              *  </list>
              * </remarks>
