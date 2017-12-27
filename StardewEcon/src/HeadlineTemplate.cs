@@ -20,9 +20,19 @@ namespace StardewEcon
         static HeadlineTemplate()
         {
             // Set up our escape-number-to-type map.
-            HeadlineTemplate.numToTypeMap = new Dictionary<int, Tuple<HeadlineTokenType, HeadlineTokenSubtype>>();
-            HeadlineTemplate.numToTypeMap.Add(1, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Location));
-            HeadlineTemplate.numToTypeMap.Add(2, Tuple.Create(HeadlineTokenType.Item, HeadlineTokenSubtype.Crop));
+            numToTypeMap = new Dictionary<int, Tuple<HeadlineTokenType, HeadlineTokenSubtype>>
+            {
+                { 0, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Earthquake) },
+                { 1, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Location) },
+                { 2, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.Crop) },
+                { 3, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.Mineral) },
+                { 4, Tuple.Create(HeadlineTokenType.Other, HeadlineTokenSubtype.Fatalities) },
+                { 5, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.Foraged) },
+                { 6, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.RiverFish) },
+                { 7, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.OceanFish) },
+                { 8, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.Artisan) },
+                { 9, Tuple.Create(HeadlineTokenType.Item,  HeadlineTokenSubtype.Cooked) }
+            };
         }
 
         /**
@@ -188,20 +198,15 @@ namespace StardewEcon
             // TODO
             switch(type)
             {
-                case HeadlineTokenSubtype.Crop:
-                    return rng.GetRandomCrop();
-                case HeadlineTokenSubtype.Artisan:
-                    break;
-                case HeadlineTokenSubtype.Mineral:
-                    break;
-                case HeadlineTokenSubtype.OceanFish:
-                    break;
-                case HeadlineTokenSubtype.RiverFish:
-                    break;
-                default:
-                    break;
+                case HeadlineTokenSubtype.Crop: return rng.GetRandomCrop();
+                case HeadlineTokenSubtype.Mineral: return rng.GetRandomMineral();
+                case HeadlineTokenSubtype.Foraged: return rng.GetRandomForagedItem();
+                case HeadlineTokenSubtype.RiverFish: return rng.GetRandomRiverFish();
+                case HeadlineTokenSubtype.OceanFish: return rng.GetRandomOceanFish();
+                case HeadlineTokenSubtype.Artisan: return rng.GetRandomArtisanGood();
+                case HeadlineTokenSubtype.Cooked: return rng.GetRandomCookedItem();
+                default: return StardewValley.Object.stone;
             }
-            return StardewValley.Object.stone;
         }
 
         /**
@@ -219,12 +224,11 @@ namespace StardewEcon
             // TODO
             switch(type)
             {
-                case HeadlineTokenSubtype.Location:
-                    return rng.GetRandomLocation();
-                default:
-                    break;
+                case HeadlineTokenSubtype.Earthquake: return rng.GetRandomEarthquake();
+                case HeadlineTokenSubtype.Location: return rng.GetRandomLocation();
+                case HeadlineTokenSubtype.Fatalities: return rng.GetRandomFatalities();
+                default: return "Zuzu City";
             }
-            return "Zuzu City";
         }
 
         /**
@@ -334,12 +338,16 @@ namespace StardewEcon
          */
         private enum HeadlineTokenSubtype
         {
+            Earthquake,
             Location,
             Crop,
-            Artisan,
             Mineral,
+            Fatalities,
+            Foraged,
             RiverFish,
-            OceanFish
+            OceanFish,
+            Artisan,
+            Cooked,
         }
         #endregion
     }

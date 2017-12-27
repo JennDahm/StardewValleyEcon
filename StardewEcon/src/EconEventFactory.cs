@@ -29,15 +29,33 @@ namespace StardewEcon
     public class EconEventFactory : IHeadlineContentProvider
     {
         #region Configuration File Constants
-        public const string MonthlyEventsFilePath = @"config/monthly.txt";
-        public const string BiweeklyEventsFilePath = @"config/biweekly.txt";
-        public const string WeeklyEventsFilePath = @"config/weekly.txt";
+        public const string MonthlyEventsFilePath = @"config/Monthly.txt";
+        public const string BiweeklyEventsFilePath = @"config/Biweekly.txt";
+        public const string WeeklyEventsFilePath = @"config/Weekly.txt";
 
-        public const string LocationsFilePath = @"config/locations.txt";
+        public const string LocationsFilePath = @"config/Locations.txt";
         public const string DefaultLocation = "Zuzu City";
 
-        public const string CropsFilePath = @"config/crops.txt";
+        public const string CropsFilePath = @"config/Crops.txt";
         public const int DefaultCrop = 400; // Strawberry
+
+        public const string MineralsFilePath = @"config/Minerals.txt";
+        public const int DefaultMineral = 62; // Aquamarine
+
+        public const string ForagedGoodsFilePath = @"config/ForagedGoods.txt";
+        public const int DefaultForagedGood = 78; // Cave Carrot
+
+        public const string RiverFishFilePath = @"config/RiverFish.txt";
+        public const int DefaultRiverFish = 702; // Chub
+
+        public const string OceanFishFilePath = @"config/OceanFish.txt";
+        public const int DefaultOceanFish = 151; // Squid
+
+        public const string ArtisanGoodsFilePath = @"config/ArtisanGoods.txt";
+        public const int DefaultArtisanGood = 340; // Honey
+
+        public const string CookedItemsFilePath = @"config/CookedItems.txt";
+        public const int DefaultCookedItem = 220; // Chocolate Cake
         #endregion
 
         #region Static Content Lists
@@ -45,6 +63,12 @@ namespace StardewEcon
 
         private static IReadOnlyList<string> _Locations;
         private static IReadOnlyList<int> _Crops;
+        private static IReadOnlyList<int> _Minerals;
+        private static IReadOnlyList<int> _ForagedGoods;
+        private static IReadOnlyList<int> _RiverFish;
+        private static IReadOnlyList<int> _OceanFish;
+        private static IReadOnlyList<int> _ArtisanGoods;
+        private static IReadOnlyList<int> _CookedItems;
         #endregion
 
         #region Instance Fields
@@ -82,15 +106,23 @@ namespace StardewEcon
         {
             if (!_Initialized)
             {
-                var eventTemplates = new Dictionary<EventType, IReadOnlyList<HeadlineTemplate>>();
-                eventTemplates.Add(EventType.Monthly, LoadEventTemplateList(Path.Combine(modDir, MonthlyEventsFilePath)));
-                eventTemplates.Add(EventType.Biweekly, LoadEventTemplateList(Path.Combine(modDir, BiweeklyEventsFilePath)));
-                eventTemplates.Add(EventType.Weekly, LoadEventTemplateList(Path.Combine(modDir, WeeklyEventsFilePath)));
+                var eventTemplates = new Dictionary<EventType, IReadOnlyList<HeadlineTemplate>>
+                {
+                    { EventType.Monthly, LoadEventTemplateList(Path.Combine(modDir, MonthlyEventsFilePath)) },
+                    { EventType.Biweekly, LoadEventTemplateList(Path.Combine(modDir, BiweeklyEventsFilePath)) },
+                    { EventType.Weekly, LoadEventTemplateList(Path.Combine(modDir, WeeklyEventsFilePath)) }
+                };
                 _EventTemplates = eventTemplates;
 
 
-                _Locations = LoadStringList(Path.Combine(modDir, LocationsFilePath), DefaultLocation);
-                _Crops = LoadItemList(Path.Combine(modDir, CropsFilePath), DefaultCrop);
+                _Locations    = LoadStringList(Path.Combine(modDir, LocationsFilePath), DefaultLocation);
+                _Crops        = LoadItemList(Path.Combine(modDir, CropsFilePath), DefaultCrop);
+                _Minerals     = LoadItemList(Path.Combine(modDir, MineralsFilePath), DefaultMineral);
+                _ForagedGoods = LoadItemList(Path.Combine(modDir, ForagedGoodsFilePath), DefaultForagedGood);
+                _RiverFish    = LoadItemList(Path.Combine(modDir, RiverFishFilePath), DefaultRiverFish);
+                _OceanFish    = LoadItemList(Path.Combine(modDir, OceanFishFilePath), DefaultOceanFish);
+                _ArtisanGoods = LoadItemList(Path.Combine(modDir, ArtisanGoodsFilePath), DefaultArtisanGood);
+                _CookedItems  = LoadItemList(Path.Combine(modDir, CookedItemsFilePath), DefaultCookedItem);
 
                 _Initialized = true;
             }
@@ -177,6 +209,49 @@ namespace StardewEcon
         public int GetRandomCrop()
         {
             return RandomlySelectFromList(_Crops);
+        }
+
+        public int GetRandomMineral()
+        {
+            return RandomlySelectFromList(_Minerals);
+        }
+
+        public int GetRandomForagedItem()
+        {
+            return RandomlySelectFromList(_ForagedGoods);
+        }
+
+        public int GetRandomRiverFish()
+        {
+            return RandomlySelectFromList(_RiverFish);
+        }
+
+        public int GetRandomOceanFish()
+        {
+            return RandomlySelectFromList(_OceanFish);
+        }
+
+        public int GetRandomArtisanGood()
+        {
+            return RandomlySelectFromList(_ArtisanGoods);
+        }
+
+        public int GetRandomCookedItem()
+        {
+            return RandomlySelectFromList(_CookedItems);
+        }
+
+        public string GetRandomEarthquake()
+        {
+            // For now, return a random one-fraction-place number in the range [4, 8)
+            var scale = this.rand.Next(40, 70) / 10.0;
+            return scale.ToString("0.0");
+        }
+
+        public string GetRandomFatalities()
+        {
+            // For now, return a random int between 1 and 10, inclusively
+            return this.rand.Next(1, 10 + 1).ToString();
         }
         #endregion
         #endregion

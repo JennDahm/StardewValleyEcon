@@ -1,0 +1,50 @@
+### Spring Only
+# Daffodil
+# Dandelion
+# Leek
+# Morel
+# Salmonberry (Week 2, counting from 0)
+# Spring Onion
+# Wild Horseradish
+
+### Summer Only
+# Fiddlehead Fern
+# Grape (also a crop in Fall)
+# Spice Berry
+# Sweet Pea
+# Rainbow Shell
+
+
+### Fall Only
+# Blackberry (Week 1, counting from 0)
+# Chanterelle
+# Hazelnut
+# Wild Plum
+
+### Winter Only
+# Crocus
+# Crystal Fruit
+# Holly
+# Snow Yam
+# Winter Root
+# Nautilus Shell
+
+### Spring-and-Fall Only
+# Common Mushroom
+
+### Summer-and-Fall Only
+# Red Mushroom (Technically all seasons in the caves, but not outside)
+
+
+### All seasons
+# Sap
+# Coral
+# Sea Urchin
+# Clam
+# Cockle
+# Mussel
+# Oyster
+# Cave Carrot
+# Purple Mushroom
+# Cactus Fruit
+# Coconut

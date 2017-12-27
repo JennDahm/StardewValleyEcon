@@ -1,0 +1,44 @@
+#######
+# Note: Excludes Legendaries, Cave Fish, and Trapped Items
+#######
+
+### Spring
+
+### Summer
+# Catfish
+# Dorado
+# Rainbow Trout
+
+### Fall
+# Salmon
+# Walleye
+
+### Winter
+# Lingcod
+# Perch
+
+### Spring-and-Summer
+# Sunfish
+
+### Spring-and-Fall
+# Smallmouth Bass
+
+### Summer-and-Winter
+# Pike
+# Sturgeon
+
+### Fall-and-Winter
+# Tiger Trout
+
+### Spring-and-Summer-and-Fall
+# Shad
+
+### All-season
+# Bream
+# Bullhead
+# Carp
+# Chub
+# Largemouth Bass
+# Sandfish
+# Scorpion Carp
+# Woodskip

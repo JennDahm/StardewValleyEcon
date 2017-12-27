@@ -1,0 +1,17 @@
+# Beer
+# Cheese
+# Cloth
+# Coffee
+# Duck Mayonnaise
+# Goat Cheese
+# Honey
+# Intentionally skipping Void Mayonnaise
+# Juice
+# Mayonnaise
+# Mead
+# Oil
+# Pale Ale
+# Truffle Oil
+# Wine
+
+# Various pickles and jellies from crops

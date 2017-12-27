@@ -1,0 +1,45 @@
+######
+# Note: Does not include flowers
+######
+
+## Spring Crops
+# Cauliflower
+# Garlic
+# Green Bean
+# Kale
+# Parsnip
+# Potato
+# Rhubarb
+# Strawberry
+
+## Spring-And-Summer Crops
+# Coffee Bean
+
+## Summer Crops
+# Blueberry
+# Hops
+# Hot Pepper
+# Melon
+# Red Cabbage
+# Starfruit
+# Tomato
+
+## Summer-And-Fall Crops
+# Corn
+# Sunflower
+# Wheat
+
+## Fall Crops
+# Amaranth
+# Artichoke
+# Beet
+# Bok Choy
+# Cranberries
+# Eggplant
+# Grape
+# Pumpkin
+# Sweet Gem Berry
+# Yam
+
+## All-year Crops
+# Ancient Fruit

@@ -1,0 +1,46 @@
+######
+# Note: Excludes legendaries and trapped items
+######
+
+### Spring
+
+
+### Summer
+# Octopus
+# Pufferfish
+
+### Fall
+
+### Winter
+# Squid
+
+### Spring-and-Summer
+
+### Spring-and-Fall
+# Anchovy
+# Eel
+
+### Spring-and-Winter
+# Herring
+
+### Summer-and-Fall
+# Super Cucumber
+# Tilapia
+
+### Summer-and-Winter
+# Red Mullet
+# Tuna
+
+### Fall-and-Winter
+# Albacore
+# Sea Cucumber
+
+
+### Spring-and-Summer-and-Winter
+# Halibut
+
+### Sprint-and-Fall-and-Winter
+# Sardine
+
+### Summer-and-Fall-and-Winter
+# Red Snapper

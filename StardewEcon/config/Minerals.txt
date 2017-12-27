@@ -1,0 +1,55 @@
+# Stone
+
+# Aerinite
+# Alamite
+# Amethyst
+# Aquamarine
+# Baryte
+# Basalt
+# Bixite
+# Calcite
+# Celestine
+# Diamond
+# Dolomite
+# Earth Crystal
+# Emerald
+# Esperite
+# Fairy Stone
+# Fire Opal
+# Fire Quartz
+# Fluorapatite
+# Frozen Tear
+# Geminite
+# Ghost Crystal
+# Granite
+# Helvite
+# Hematite
+# Jade
+# Jagoite
+# Jamborite
+# Jasper
+# Kyanite
+# Lemon Stone
+# Limestone
+# Lunarite
+# Malachite
+# Marble
+# Mudstone
+# Nekoite
+# Neptunite
+# Obsidian
+# Ocean Stone
+# Opal
+# Orpiment
+# Petrified Slime
+# Prismatic Shard
+# Pyrite
+# Quartz
+# Ruby
+# Sandstone
+# Slate
+# Soapstone
+# Star Shards
+# Thunder Egg
+# Tigerseye
+# Topaz

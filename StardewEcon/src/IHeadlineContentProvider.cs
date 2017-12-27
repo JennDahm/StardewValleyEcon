@@ -19,10 +19,21 @@ namespace StardewEcon
         Random GetRNG();
 
         /**
+         * <summary>Returns a earthquake magnitude as a string.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random earthquake magnitude.</returns>
+         */
+        string GetRandomEarthquake();
+
+        /**
          * <summary>Returns a random location name.</summary>
          * <remarks>
          *  This advances the state of the internal RNG. The next call to
-         *  this function will return an entirely different value.
+         *  this function will likely return an entirely different value.
          * </remarks>
          * 
          * <returns>A random location name.</returns>
@@ -33,11 +44,88 @@ namespace StardewEcon
          * <summary>Returns a random crop item ID.</summary>
          * <remarks>
          *  This advances the state of the internal RNG. The next call to
-         *  this function will return an entirely different value.
+         *  this function will likely return an entirely different value.
          * </remarks>
          * 
          * <returns>A random crop ID.</returns>
          */
         int GetRandomCrop();
+
+        /**
+         * <summary>Returns a random mineral item ID.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random mineral ID.</returns>
+         */
+        int GetRandomMineral();
+
+        /**
+         * <summary>Returns a random number of fatalities as a string.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random number of fatalities.</returns>
+         */
+        string GetRandomFatalities();
+
+        /**
+         * <summary>Returns a random foraged item ID.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random foraged item ID.</returns>
+         */
+        int GetRandomForagedItem();
+
+        /**
+         * <summary>Returns a random river fish item ID.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random river fish ID.</returns>
+         */
+        int GetRandomRiverFish();
+
+        /**
+         * <summary>Returns a random ocean fish item ID.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random ocean fish ID.</returns>
+         */
+        int GetRandomOceanFish();
+
+        /**
+         * <summary>Returns a random artisan good item ID.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random artisan good ID.</returns>
+         */
+        int GetRandomArtisanGood();
+
+        /**
+         * <summary>Returns a random cooked item ID.</summary>
+         * <remarks>
+         *  This advances the state of the internal RNG. The next call to
+         *  this function will likely return an entirely different value.
+         * </remarks>
+         * 
+         * <returns>A random cooked item ID.</returns>
+         */
+        int GetRandomCookedItem();
     }
 }
