@@ -129,5 +129,17 @@ namespace StardewEcon
             Rectangle d = destinationRect;
             IClickableMenu.drawTextureBox(batch, texture, sourceRect, d.X, d.Y, d.Width, d.Height, color, scale, drawShadow);
         }
+
+        public static xTile.Dimensions.Location PixelToTile(Point pt)
+        {
+            return PixelToTile(pt.X, pt.Y);
+        }
+
+        public static xTile.Dimensions.Location PixelToTile(int x, int y)
+        {
+            var tileX = (Game1.viewport.X + x) / Game1.tileSize;
+            var tileY = (Game1.viewport.Y + y) / Game1.tileSize;
+            return new xTile.Dimensions.Location(tileX, tileY);
+        }
     }
 }

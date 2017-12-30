@@ -73,6 +73,25 @@ namespace StardewEcon
             // Create the event manager and load events for the player.
             this.eventManager = new EconEventManager(this.Helper, this.Monitor);
             this.eventManager.LoadPlayerEvents();
+
+            // Modify town to move Pierre's hours sign tile from Buildings layer
+            // to Back layer. This prevents the Town object from displaying a
+            // dialogue we don't want without screwing with the way the building
+            // looks. It has the unfortunate effect of making the tile passable,
+            // which we remedy by adding our own invisible, non-passable object
+            // to the tile location.
+            var town = GetTown();
+            var signLoc = new xTile.Dimensions.Location(45, 56);
+            var buildings = town.Map.GetLayer("Buildings");
+            var back = town.Map.GetLayer("Back");
+            var signTile = buildings.Tiles[signLoc];
+            buildings.Tiles[signLoc] = null;
+            back.Tiles[signLoc] = signTile;
+
+            // Add our news bulletin object:
+            var signLocVec = new Microsoft.Xna.Framework.Vector2(signLoc.X, signLoc.Y);
+            var bulletin = new NewsBulletinObject(this.eventManager);
+            bulletin.setInTown(town, signLocVec);
         }
 
         private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)
@@ -124,6 +143,11 @@ namespace StardewEcon
             var stone = new Object(Object.stone, 1);
             var price = stone.price;
             this.Monitor.Log($"Price of stone at beginning of day: {price}");
+        }
+
+        private GameLocation GetTown()
+        {
+            return Game1.locations.OfType<StardewValley.Locations.Town>().FirstOrDefault();
         }
     }
 }

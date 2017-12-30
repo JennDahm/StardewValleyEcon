@@ -91,6 +91,7 @@
     <Compile Include="src\ModEntry.cs" />
     <Compile Include="src\NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\NewsBulletinObject.cs" />
     <Compile Include="src\SDateExtensions.cs" />
     <Compile Include="src\Utility.cs" />
   </ItemGroup>
