@@ -123,6 +123,8 @@ namespace StardewEcon
         private static IReadOnlyList<int> _OceanFish;
         private static IReadOnlyList<int> _ArtisanGoods;
         private static IReadOnlyList<int> _CookedItems;
+
+        private static IReadOnlyDictionary<int, ItemInformation> _ItemInfo;
         #endregion
 
         #region Instance Fields
@@ -205,6 +207,15 @@ namespace StardewEcon
                 _OceanFish    = LoadItemList(Path.Combine(modDir, OceanFishFilePath), DefaultOceanFish);
                 _ArtisanGoods = LoadItemList(Path.Combine(modDir, ArtisanGoodsFilePath), DefaultArtisanGood);
                 _CookedItems  = LoadItemList(Path.Combine(modDir, CookedItemsFilePath), DefaultCookedItem);
+
+                var allItems = _Crops
+                    .Concat(_Minerals)
+                    .Concat(_ForagedGoods)
+                    .Concat(_RiverFish)
+                    .Concat(_OceanFish)
+                    .Concat(_ArtisanGoods)
+                    .Concat(_CookedItems);
+                _ItemInfo = LoadItemInformation(allItems);
 
                 _Initialized = true;
             }
@@ -297,6 +308,18 @@ namespace StardewEcon
         public Random GetRNG()
         {
             return this.rand;
+        }
+
+        /**
+         * <seealso cref="IHeadlineContentProvider.GetItemInformation(int)"/>
+         */
+        public ItemInformation GetItemInformation(int itemID)
+        {
+            if (!_ItemInfo.TryGetValue(itemID, out ItemInformation info))
+            {
+                info = new ItemInformation("???", 0);
+            }
+            return info;
         }
 
         /**
@@ -493,6 +516,24 @@ namespace StardewEcon
                 list.Add(defaultIfEmpty);
             }
             return list;
+        }
+
+        /**
+         * <summary>Scrapes the game's object information array for canonical item prices and names.</summary>
+         * 
+         * <param name="items">The IDs of the items whose information to retrieve.</param>
+         * <returns>A dictionary linking item IDs to item information.</returns>
+         */
+        private static IReadOnlyDictionary<int, ItemInformation> LoadItemInformation(IEnumerable<int> items)
+        {
+            var allInfo = new Dictionary<int, ItemInformation>();
+            foreach (int item in items)
+            {
+                var obj = new StardewValley.Object(item, 1);
+                var info = new ItemInformation(obj.DisplayName, obj.Price);
+                allInfo.Add(item, info);
+            }
+            return allInfo;
         }
         #endregion
 

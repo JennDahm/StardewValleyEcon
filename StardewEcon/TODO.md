@@ -3,7 +3,6 @@
 * Fix bounding box on NewsBulletinObject.
 * Fix display of items. Parsnips in particular display incorrectly.
 * Actually implement price changes.
-* Figure out how to get item names.
 * Figure out whether we store and retrieve current events from player save.
   With entirely deterministic RNG, the only thing that could prevent us from
   recreating a player's events from scratch is if the config files were updated.

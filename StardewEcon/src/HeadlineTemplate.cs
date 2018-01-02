@@ -59,13 +59,14 @@ namespace StardewEcon
                         // If we haven't yet generated an item, select that to
                         // be the item affected by this event.
                         int item = GenerateItem(token.subtype, rng);
+                        var itemInfo = rng.GetItemInformation(item);
                         if(affectedItem == -1)
                         {
                             affectedItem = item;
-                            oldPrice = GetOriginalPrice(item);
+                            oldPrice = itemInfo.price;
                         }
                         
-                        builder.Append(GetItemName(item));
+                        builder.Append(itemInfo.name);
                         break;
                     }
                     case HeadlineTokenType.Other:
@@ -251,30 +252,6 @@ namespace StardewEcon
             // -25% and +25%, inclusive.
             // This translates to an integer range between -5 and +5, inclusive.
             return rand.Next(-5, 5 + 1) * 5;
-        }
-
-        /**
-         * <summary>Finds the in-game name of the given item.</summary>
-         * 
-         * <param name="item">The item to name.</param>
-         * <returns>The name of the item.</returns>
-         */
-        private string GetItemName(int item)
-        {
-            // TODO
-            return item.ToString();
-        }
-
-        /**
-         * <summary>Retrieves the original price of the given item.</summary>
-         * 
-         * <param name="item">The item to price.</param>
-         * <returns>The original price of the item.</returns>
-         */
-        private int GetOriginalPrice(int item)
-        {
-            // TODO
-            return 0;
         }
         #endregion
 

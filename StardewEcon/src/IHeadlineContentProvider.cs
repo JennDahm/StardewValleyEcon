@@ -19,6 +19,18 @@ namespace StardewEcon
         Random GetRNG();
 
         /**
+         * <summary>Returns canonical item information, disregarding current events.</summary>
+         * <remarks>
+         *  This must not affect the state of the internal RNG, and it must
+         *  return the same result every time it is called with the same input.
+         * </remarks>
+         * 
+         * <param name="itemID">The ID of the item to query.</param>
+         * <returns>The canonical information about the given item.</returns>
+         */
+        ItemInformation GetItemInformation(int itemID);
+
+        /**
          * <summary>Returns a earthquake magnitude as a string.</summary>
          * <remarks>
          *  This advances the state of the internal RNG. The next call to
@@ -127,5 +139,17 @@ namespace StardewEcon
          * <returns>A random cooked item ID.</returns>
          */
         int GetRandomCookedItem();
+    }
+
+    public struct ItemInformation
+    {
+        public string name;
+        public int price;
+
+        public ItemInformation(string name, int price)
+        {
+            this.name = name;
+            this.price = price;
+        }
     }
 }
