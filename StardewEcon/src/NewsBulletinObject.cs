@@ -17,6 +17,7 @@ namespace StardewEcon
             this.displayName = null;
             this.type = "interactive";
             this.fragility = 2; // Prevent it from breaking
+            this.boundingBox = new Rectangle(0, 0, Game1.tileSize, Game1.tileSize);
 
             this.canBeGrabbed = false;
             this.isRecipe = false;
@@ -28,6 +29,8 @@ namespace StardewEcon
         {
             this.TileLocation = loc;
             area.Objects.Add(loc, this);
+            this.boundingBox.X = (int) loc.X * Game1.tileSize;
+            this.boundingBox.Y = (int) loc.Y * Game1.tileSize;
         }
 
         public override bool checkForAction(StardewValley.Farmer who, bool justCheckingForActivity = false)

@@ -1,6 +1,5 @@
 ﻿# Basic Functionality
 
-* Fix bounding box on NewsBulletinObject.
 * Fix display of items. Parsnips in particular display incorrectly.
 * Actually implement price changes.
 * Figure out whether we store and retrieve current events from player save.
