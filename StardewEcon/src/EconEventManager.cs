@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 using static StardewEcon.EconEvent;
 
@@ -94,15 +95,15 @@ namespace StardewEcon
         };
 
         /**
-         * <summary>A map from event type to event factory.</summary>
+         * <summary>A list of event factories generated from _EventTypes.</summary>
          * <remarks>Will never be null or empty so long as <see cref="_EventTypes"/> is not empty.</remarks>
          */
-        private IReadOnlyDictionary<EventType, EconEventFactory> factories;
+        private IReadOnlyList<EconEventFactory> factories;
 
         /**
          * <summary>The events currently in effect.</summary>
          * <remarks>
-         *  Until <see cref="GenerateNewEvents"/> is called, is null. Afterwards,
+         *  Until <see cref="GenerateAndApplyNewEvents"/> is called, is null. Afterwards,
          *  is never null and always has the same number of elements as
          *  <see cref="_EventTypes"/>.
          * </remarks>
@@ -127,7 +128,7 @@ namespace StardewEcon
             // constructor should not be called before the game is loaded.
             // SDate.Now() would fail during that time period because the
             // "current" date isn't valid.
-            this.factories = _EventTypes.ToDictionary(t => t, t => EconEventFactory.Create(t));
+            this.factories = _EventTypes.Select(type => EconEventFactory.Create(type)).ToList();
         }
         #endregion
 
@@ -165,7 +166,6 @@ namespace StardewEcon
         public void LoadPlayerEvents()
         {
             // TODO: Load player events
-            this.GenerateNewEvents();
         }
 
         /**
@@ -183,8 +183,30 @@ namespace StardewEcon
          */
         public bool UpdateEvents()
         {
-            // TODO
-            return false;
+            // Make sure there actually *are* events
+            if( currentEvents == null )
+            {
+                this.GenerateAndApplyNewEvents();
+                return true;
+            }
+            else
+            {
+                // Update each of the existing events when it's time.
+                var anyUpdated = false;
+                for (int i = 0; i < _EventTypes.Length; i++)
+                {
+                    if( IsUpdateToday(_EventTypes[i]) )
+                    {
+                        // Unapply the old one, generate a new one, and apply the new one.
+                        this.UnapplyEvent(this.currentEvents[i]);
+                        this.currentEvents[i] = this.factories[i].ReseedWithDate().GenerateRandomEvent();
+                        this.ApplyEvent(this.currentEvents[i]);
+
+                        anyUpdated = true;
+                    }
+                }
+                return anyUpdated;
+            }
         }
 
         /**
@@ -207,7 +229,7 @@ namespace StardewEcon
          */
         public void UnapplyEvents()
         {
-            // TODO
+            this.currentEvents.ForEach(evnt => this.UnapplyEvent(evnt));
         }
         #endregion
 
@@ -220,11 +242,17 @@ namespace StardewEcon
          * 
          * <returns>The new set generated. This is also available via the CurrentEvents property.</returns>
          */
-        private IReadOnlyList<EconEvent> GenerateNewEvents()
+        private IReadOnlyList<EconEvent> GenerateAndApplyNewEvents()
         {
-            // Generate the events.
-            this.currentEvents =
-                _EventTypes.Select(t => this.factories[t])
+            // In the unlikely event we call this while there are existing events,
+            // make sure to unapply them.
+            if( this.currentEvents != null )
+            {
+                this.UnapplyEvents();
+            }
+
+            // Generate the events for the current date.
+            this.currentEvents = this.factories
                 .Select(f => f.ReseedWithDate().GenerateRandomEvent())
                 .ToList();
 
@@ -234,7 +262,7 @@ namespace StardewEcon
         }
 
         /**
-         * <summary>Applies pricing changes to all affected items in the game.</summary>
+         * <summary>Applies the given event's pricing changes to all affected items in the game.</summary>
          * <remarks>
          *  This affects items in the player's inventory and chests as
          *  well as newly created items. This does not affect store prices, as
@@ -242,7 +270,7 @@ namespace StardewEcon
          * </remarks>
          * 
          * <param name="e">The event to apply.</param>
-         * <seealso cref="UnapplyEvents"/>
+         * <seealso cref="UnapplyEvent(EconEvent)"/>
          */
         private void ApplyEvent(EconEvent e)
         {
@@ -266,6 +294,40 @@ namespace StardewEcon
 
             Game1.objectInformation[index] = str;
             this.Monitor.Log($"Modified price of stone to 500.", LogLevel.Info);*/
+        }
+
+        /**
+         * <summary>Unapplies the given event's pricing changes to all affected items in the game.</summary>
+         * <remarks>
+         *  This affects items in the player's inventory and chests as
+         *  well as newly created items. This does not affect store prices, as
+         *  those are hard-coded.
+         * </remarks>
+         * 
+         * <param name="e">The event to unapply.</param>
+         * <seealso cref="ApplyEvent(EconEvent)"/>
+         */
+        private void UnapplyEvent(EconEvent e)
+        {
+            // TODO
+        }
+
+        private bool IsUpdateToday(EventType type)
+        {
+            // Days start from one. We want them to start from 0.
+            var dayOfMonth = SDate.Now().Day - 1;
+
+            switch(type)
+            {
+                case EventType.Monthly:
+                    return dayOfMonth == 0;
+                case EventType.Biweekly:
+                    return (dayOfMonth % 14) == 0;
+                case EventType.Weekly:
+                    return (dayOfMonth % 7) == 0;
+                default:
+                    return false;
+            }
         }
         #endregion
     }
