@@ -14,6 +14,7 @@ namespace StardewEcon
     public class ModEntry : Mod
     {
         private EconEventManager eventManager;
+        private NewsBulletinObject bulletinObject;
 
         /*********
         ** Public methods
@@ -32,6 +33,9 @@ namespace StardewEcon
             TimeEvents.TimeOfDayChanged += TimeEvents_TimeOfDayChanged;
             MenuEvents.MenuChanged += MenuEvents_MenuChanged;
             ControlEvents.KeyPressed += ControlEvents_KeyPressed;
+
+            SaveEvents.BeforeSave += SaveEvents_BeforeSave;
+            SaveEvents.AfterSave += SaveEvents_AfterSave;
         }
 
         /*********
@@ -90,8 +94,25 @@ namespace StardewEcon
 
             // Add our news bulletin object:
             var signLocVec = new Microsoft.Xna.Framework.Vector2(signLoc.X, signLoc.Y);
-            var bulletin = new NewsBulletinObject(this.eventManager);
-            bulletin.setInTown(town, signLocVec);
+            this.bulletinObject = new NewsBulletinObject(this.eventManager);
+            this.bulletinObject.setInTown(town, signLocVec);
+        }
+
+        private void SaveEvents_BeforeSave(object sender, EventArgs e)
+        {
+            // Remove the bulletin object before saving so that it doesn't
+            // cause the game code to panic at all.
+            this.bulletinObject.RemoveBeforeSaving();
+        }
+
+        private void SaveEvents_AfterSave(object sender, EventArgs e)
+        {
+            // Replace the bulletin object after saving so that the mod
+            // continues to work properly.
+            this.bulletinObject.ReplaceAfterSaving();
+
+            // Save event state so that we can return to it after loading.
+            this.eventManager.SaveEvents();
         }
 
         private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)

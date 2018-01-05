@@ -8,6 +8,8 @@ namespace StardewEcon
     {
         public readonly EconEventManager eventManager;
 
+        private GameLocation area;
+
         public NewsBulletinObject(EconEventManager eventManager)
         {
             this.eventManager = eventManager;
@@ -27,10 +29,24 @@ namespace StardewEcon
 
         public void setInTown(GameLocation area, Vector2 loc)
         {
+            this.area = area;
             this.TileLocation = loc;
-            area.Objects.Add(loc, this);
+            this.area.Objects.Add(this.TileLocation, this);
             this.boundingBox.X = (int) loc.X * Game1.tileSize;
             this.boundingBox.Y = (int) loc.Y * Game1.tileSize;
+        }
+
+        public void RemoveBeforeSaving()
+        {
+            if( this.area?.Objects?[this.TileLocation] == this )
+            {
+                this.area.Objects.Remove(this.TileLocation);
+            }
+        }
+
+        public void ReplaceAfterSaving()
+        {
+            this.area?.Objects?.Add(this.TileLocation, this);
         }
 
         public override bool checkForAction(StardewValley.Farmer who, bool justCheckingForActivity = false)

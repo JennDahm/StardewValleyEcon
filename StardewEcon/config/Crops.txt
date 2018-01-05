@@ -3,43 +3,71 @@
 ######
 
 ## Spring Crops
-# Cauliflower
-# Garlic
-# Green Bean
-# Kale
-# Parsnip
-# Potato
-# Rhubarb
-# Strawberry
+# Cauliflower (seeds: 474)
+190
+# Garlic (seeds: 476)
+248
+# Green Bean (seeds: 473)
+188
+# Kale (seeds: 477)
+250
+# Parsnip (seeds: 472)
+24
+# Potato (seeds: 475)
+192
+# Rhubarb (seeds: 478)
+252
+# Strawberry (seeds: 745)
+400
 
 ## Spring-And-Summer Crops
-# Coffee Bean
+# Coffee Bean (seed is the crop)
+433
 
 ## Summer Crops
-# Blueberry
-# Hops
-# Hot Pepper
-# Melon
-# Red Cabbage
-# Starfruit
-# Tomato
+# Blueberry (seeds: 481)
+258
+# Hops (seeds: 302)
+304
+# Hot Pepper (seeds: 482)
+260
+# Melon (seeds: 479)
+254
+# Red Cabbage (seeds: 485)
+266
+# Starfruit (seeds: 486)
+268
+# Tomato (seeds: 480)
+256
 
 ## Summer-And-Fall Crops
-# Corn
-# Sunflower
-# Wheat
+# Corn (seeds: 487)
+270
+# Wheat (seeds: 483)
+262
 
 ## Fall Crops
-# Amaranth
-# Artichoke
-# Beet
-# Bok Choy
-# Cranberries
-# Eggplant
-# Grape
-# Pumpkin
-# Sweet Gem Berry
-# Yam
+# Amaranth (seeds: 299)
+300
+# Artichoke (seeds: 489)
+274
+# Beet (seeds: 494)
+284
+# Bok Choy (seeds: 491)
+278
+# Cranberries (seeds: 493)
+282
+# Eggplant (seeds: 488)
+272
+# Grape (seeds: 301)
+398
+# Pumpkin (seeds: 490)
+276
+# Sweet Gem Berry (seeds: ???)
+417
+# Yam (seeds: 492)
+280
 
 ## All-year Crops
-# Ancient Fruit
+# Ancient Fruit (seeds: 499)
+454

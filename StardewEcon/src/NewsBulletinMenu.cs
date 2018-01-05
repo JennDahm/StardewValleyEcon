@@ -67,16 +67,24 @@ namespace StardewEcon
             base.drawBorderLabel(b, "News Bulletin", Game1.smallFont, this.xPositionOnScreen + Game1.tileSize/2, this.yPositionOnScreen - Game1.tileSize + Game1.tileSize / 8);
 
             // Draw contents
-            for( int i = 0; i < content.Count; i++ )
+            if (true)
             {
-                EconEvent e = content[i].Item1;
-                Rectangle rect = content[i].Item2;
-                if (i != content.Count - 1)
+                for (int i = 0; i < content.Count; i++)
                 {
-                    this.drawHorizontalPartition(b, rect.Bottom - (Game1.tileSize - this.separatorHeight) / 2, true);
-                }
-                
-                Utility.DrawWrappedString(b, Game1.dialogueFont, e.Headline, rect, Color.Black);
+                    EconEvent e = content[i].Item1;
+                    Rectangle rect = content[i].Item2;
+                    if (i != content.Count - 1)
+                    {
+                        this.drawHorizontalPartition(b, rect.Bottom - (Game1.tileSize - this.separatorHeight) / 2, true);
+                    }
+
+                    Utility.DrawWrappedString(b, Game1.dialogueFont, e.Headline, rect, Color.Black);
+                } 
+            }
+            else
+            {
+                // Test code to make sure icons display correctly
+                //this.drawIconGrid(b, EconEventFactory._Crops);
             }
 
             // Draw close box and mouse
@@ -119,6 +127,40 @@ namespace StardewEcon
             int y = this.yPositionOnScreen + this.yOffsetToInternal;
             int dy = this.itemHeight + this.separatorHeight;
             return this.events.Select((e, i) => Tuple.Create(e, new Rectangle(x, y + i * dy, this.internalWidth, this.itemHeight)));
+        }
+
+        private void drawIconGrid(SpriteBatch b, IReadOnlyList<int> items)
+        {
+            int startX = this.xPositionOnScreen + this.xOffsetToInternal;
+            int startY = this.yPositionOnScreen + this.yOffsetToInternal;
+            int iconWidth = 16 * Game1.pixelZoom;
+            int iconHeight = 16 * Game1.pixelZoom;
+            int dx = iconWidth;
+            int dy = iconHeight;
+
+            int x = 0;
+            int y = 0;
+            foreach (var item in items)
+            {
+                int drawX = startX + x * dx;
+                int drawY = startY + y * dy;
+
+                var spriteSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, item, 16, 16);
+                var spriteBox = new Rectangle(drawX, drawY, iconWidth, iconHeight);
+
+                b.Draw(
+                    texture: Game1.objectSpriteSheet,
+                    sourceRectangle: spriteSourceRect,
+                    destinationRectangle: spriteBox,
+                    color: Color.White);
+
+                x++;
+                if (x >= 6)
+                {
+                    x = 0;
+                    y++;
+                }
+            }
         }
     }
 }
