@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System;
 
-namespace StardewEcon
+using StardewEcon.Econ;
+
+namespace StardewEcon.View
 {
     public class EconEventHoverBox
     {
@@ -17,7 +19,7 @@ namespace StardewEcon
 
         public int PercentChange { get; }
 
-        public void draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch)
         {
             // Constants
             SpriteFont font = Game1.smallFont;

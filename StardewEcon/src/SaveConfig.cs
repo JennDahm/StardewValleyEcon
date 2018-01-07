@@ -1,6 +1,8 @@
 ﻿using StardewModdingAPI;
 using System.Collections.Generic;
 
+using StardewEcon.Econ;
+
 namespace StardewEcon
 {
     public class SaveConfig

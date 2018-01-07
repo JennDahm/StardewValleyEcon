@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using static StardewEcon.EconEvent;
+using static StardewEcon.Econ.EconEvent;
 
-namespace StardewEcon
+namespace StardewEcon.Econ
 {
     /**
      * <summary>Generates randomized EconEvents and content for HeadlineTemplates.</summary>

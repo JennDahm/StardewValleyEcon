@@ -3,9 +3,9 @@ using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
-using static StardewEcon.EconEvent;
+using static StardewEcon.Econ.EconEvent;
 
-namespace StardewEcon
+namespace StardewEcon.Econ
 {
     /**
      * <summary>Manages the economic events happening in the game world.</summary>

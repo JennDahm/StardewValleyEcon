@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace StardewEcon
+using StardewEcon.Econ;
+
+namespace StardewEcon.View
 {
     class NewsBulletinObject : StardewValley.Object
     {
@@ -27,7 +29,7 @@ namespace StardewEcon
             this.questItem = false;
         }
 
-        public void setInTown(GameLocation area, Vector2 loc)
+        public void SetInTown(GameLocation area, Vector2 loc)
         {
             this.area = area;
             this.TileLocation = loc;

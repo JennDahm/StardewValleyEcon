@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StardewEcon
+namespace StardewEcon.Econ
 {
     /**
      * <summary>A black box that provides random content for headlines.</summary>

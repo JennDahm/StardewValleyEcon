@@ -9,6 +9,9 @@ using Object = StardewValley.Object;
 using System.Collections.Generic;
 using StardewModdingAPI.Utilities;
 
+using StardewEcon.View;
+using StardewEcon.Econ;
+
 namespace StardewEcon
 {
     /// <summary>The mod entry point.</summary>
@@ -126,7 +129,7 @@ namespace StardewEcon
             this.Monitor.Log("Adding Bulletin object to location of Pierre's hours sign.", LogLevel.Trace);
             var signLocVec = new Microsoft.Xna.Framework.Vector2(signLoc.X, signLoc.Y);
             this.bulletinObject = new NewsBulletinObject(this.eventManager);
-            this.bulletinObject.setInTown(town, signLocVec);
+            this.bulletinObject.SetInTown(town, signLocVec);
         }
 
         private void SaveEvents_BeforeSave(object sender, EventArgs e)

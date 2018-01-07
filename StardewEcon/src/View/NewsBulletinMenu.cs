@@ -6,7 +6,9 @@ using StardewValley;
 using StardewValley.Menus;
 using Microsoft.Xna.Framework;
 
-namespace StardewEcon
+using StardewEcon.Econ;
+
+namespace StardewEcon.View
 {
     public class NewsBulletinMenu : IClickableMenu
     {
@@ -51,7 +53,7 @@ namespace StardewEcon
 
         public override void draw(SpriteBatch b)
         {
-            var content = getContent().ToList();
+            var content = GetContent().ToList();
 
             // Draw box and background fade
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
@@ -92,7 +94,7 @@ namespace StardewEcon
             this.drawMouse(b);
 
             // Draw hover text!
-            this.hoverBox?.draw(b);
+            this.hoverBox?.Draw(b);
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
@@ -105,7 +107,7 @@ namespace StardewEcon
             base.performHoverAction(x, y);
             this.hoverBox = null;
             int i = 0;
-            foreach (var content in getContent())
+            foreach (var content in GetContent())
             {
                 EconEvent e = content.Item1;
                 Rectangle rect = content.Item2;
@@ -121,7 +123,7 @@ namespace StardewEcon
             }
         }
 
-        private IEnumerable<Tuple<EconEvent, Rectangle>> getContent()
+        private IEnumerable<Tuple<EconEvent, Rectangle>> GetContent()
         {
             int x = this.xPositionOnScreen + this.xOffsetToInternal;
             int y = this.yPositionOnScreen + this.yOffsetToInternal;
@@ -129,7 +131,7 @@ namespace StardewEcon
             return this.events.Select((e, i) => Tuple.Create(e, new Rectangle(x, y + i * dy, this.internalWidth, this.itemHeight)));
         }
 
-        private void drawIconGrid(SpriteBatch b, IReadOnlyList<int> items)
+        private void DrawIconGrid(SpriteBatch b, IReadOnlyList<int> items)
         {
             int startX = this.xPositionOnScreen + this.xOffsetToInternal;
             int startY = this.yPositionOnScreen + this.yOffsetToInternal;

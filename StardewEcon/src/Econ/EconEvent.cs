@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace StardewEcon
+namespace StardewEcon.Econ
 {
     /**
      * <summary>Represents an economic event happening in the game world.</summary>

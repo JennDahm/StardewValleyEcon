@@ -82,16 +82,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\EconEventFactory.cs" />
-    <Compile Include="src\HeadlineTemplate.cs" />
-    <Compile Include="src\EconEventHoverBox.cs" />
-    <Compile Include="src\EconEventManager.cs" />
-    <Compile Include="src\EconEvent.cs" />
-    <Compile Include="src\IHeadlineContentProvider.cs" />
+    <Compile Include="src\Econ\EconEventFactory.cs" />
+    <Compile Include="src\Econ\HeadlineTemplate.cs" />
+    <Compile Include="src\View\EconEventHoverBox.cs" />
+    <Compile Include="src\Econ\EconEventManager.cs" />
+    <Compile Include="src\Econ\EconEvent.cs" />
+    <Compile Include="src\Econ\IHeadlineContentProvider.cs" />
     <Compile Include="src\ModEntry.cs" />
-    <Compile Include="src\NewsBulletinMenu.cs" />
+    <Compile Include="src\View\NewsBulletinMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\NewsBulletinObject.cs" />
+    <Compile Include="src\View\NewsBulletinObject.cs" />
     <Compile Include="src\SaveConfig.cs" />
     <Compile Include="src\SDateExtensions.cs" />
     <Compile Include="src\Utility.cs" />
