@@ -1,12 +1,9 @@
 ﻿# Basic Functionality
 
-* Fix display of items. Parsnips in particular display incorrectly.
 * Actually implement price changes.
-* Figure out whether we store and retrieve current events from player save.
-  With entirely deterministic RNG, the only thing that could prevent us from
-  recreating a player's events from scratch is if the config files were updated.
-  Is that a large enough concern? Maybe - we would be pushing updates every so
-  often.
+* Determine whether we want to deal with config file versioning.
+  That is, if the version in the config file doesn't match the version of the
+  mod, what do we do?
 
 # Extended Functionality
 * Do we allow events affecting multiple items at once? Maybe necessary - crops and their seeds, for example.

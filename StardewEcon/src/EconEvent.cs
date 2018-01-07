@@ -1,4 +1,7 @@
-﻿namespace StardewEcon
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace StardewEcon
 {
     /**
      * <summary>Represents an economic event happening in the game world.</summary>
@@ -14,7 +17,8 @@
      * <seealso cref="EconEventManager"/>
      * <seealso cref="EconEventFactory"/>
      */
-    public struct EconEvent
+    [Serializable]
+    public class EconEvent : ISerializable
     {
         /**
          * <summary>Creates a new event.</summary>
@@ -31,6 +35,35 @@
             this.AffectedItem = item;
             this.PercentChange = percent;
             this.OriginalPrice = oldPrice;
+        }
+
+        /**
+         * <summary>Special constructor used only for deserialization.</summary>
+         * 
+         * <param name="info">The information to load.</param>
+         * <param name="context">The context of the deserialization.</param>
+         * 
+         * <seealso cref="ISerializable"/>
+         */
+        public EconEvent(SerializationInfo info, StreamingContext context)
+        {
+            this.Headline = info.GetString(nameof(this.Headline));
+            this.AffectedItem = info.GetInt32(nameof(this.AffectedItem));
+            this.OriginalPrice = info.GetInt32(nameof(this.OriginalPrice));
+            this.PercentChange = info.GetInt32(nameof(this.PercentChange));
+        }
+
+        /**
+         * <summary>Fills the serialization info with our properties.</summary>
+         * 
+         * <seealso cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
+         */
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(this.Headline), this.Headline);
+            info.AddValue(nameof(this.AffectedItem), this.AffectedItem);
+            info.AddValue(nameof(this.OriginalPrice), this.OriginalPrice);
+            info.AddValue(nameof(this.PercentChange), this.PercentChange);
         }
 
         /**
@@ -75,7 +108,21 @@
                 return OriginalPrice + (OriginalPrice * PercentChange) / 100;
             }
         }
-        
+
+        /**
+         * <summary>A string representation of the event, for debugging purposes.</summary>
+         * <remarks>
+         *  The format of this string should not be relied upon for programmatic
+         *  purposes. It's strictly for human consumption.
+         * </remarks>
+         * 
+         * <returns>A string describing the event.</returns>
+         */
+        public override string ToString()
+        {
+            return $"'{this.Headline}': Item {this.AffectedItem} price is {this.OriginalPrice} {this.PercentChange.ToString("+ #;- #;+ 0")}% = {this.NewPrice}";
+        }
+
         /**
          * The EconEvent doesn't itself need to know what type it is, but other
          * classes will find this helpful.

@@ -119,24 +119,19 @@ namespace StardewEcon
          *  before constructing any event managers.
          * </remarks>
          */
-        public EconEventManager(IModHelper helper, IMonitor monitor)
+        public EconEventManager(IMonitor monitor)
         {
-            this.Helper = helper;
             this.Monitor = monitor;
 
-            // Note that we do not have to create a date, because this
-            // constructor should not be called before the game is loaded.
-            // SDate.Now() would fail during that time period because the
-            // "current" date isn't valid.
-            this.factories = _EventTypes.Select(type => EconEventFactory.Create(type)).ToList();
+            // Note that have to create a date, because this constructor may be
+            // called when a new game is created. At that point, SDate.Now()
+            // would fail because the "current" date isn't valid.
+            var date = new SDate(1, "spring");
+            this.factories = _EventTypes.Select(type => EconEventFactory.Create(type, date)).ToList();
         }
         #endregion
 
         #region Public Properties
-        /**
-         * <seealso cref="Mod.Helper"/>
-         */
-        public IModHelper Helper { get; }
 
         /**
          * <seealso cref="Mod.Monitor"/>
@@ -162,10 +157,25 @@ namespace StardewEcon
          *  construction of this manager and before the first call to
          *  <see cref="UpdateEvents"/>.
          * </remarks>
+         * 
+         * <param name="helper">The ModHelper to use for loading.</param>
+         * <returns>True if the events were successfully loaded. False otherwise.</returns>
          */
-        public void LoadPlayerEvents()
+        public bool LoadPlayerEvents(IModHelper helper)
         {
-            // TODO: Load player events
+            // NOTE: This is called on Day 1 of Spring when gameplay starts.
+
+            var filename = ModEntry.GetPerGameConfigFileName("events");
+            var config = SaveConfig.Load(helper, filename);
+            if( config != null )
+            {
+                this.currentEvents = new List<EconEvent>(config.Events);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /**
@@ -184,7 +194,7 @@ namespace StardewEcon
         public bool UpdateEvents()
         {
             // Make sure there actually *are* events
-            if( currentEvents == null )
+            if( currentEvents == null || currentEvents.Count == 0 )
             {
                 this.GenerateAndApplyNewEvents();
                 return true;
@@ -214,10 +224,22 @@ namespace StardewEcon
          * <remarks>
          *  This should be called after every player save.
          * </remarks>
+         * 
+         * <param name="helper">The ModHelper to use for saving.</param>
          */
-        public void SaveEvents()
+        public void SaveEvents(IModHelper helper)
         {
-            // TODO
+            // NOTE: In earlier versions of SMAPI, SaveEvents is called at the
+            // end of "Day 0" - the intro date. Luckily, this isn't a big deal.
+
+            var config = new SaveConfig()
+            {
+                Version = ModEntry.ModVersion,
+                Events = this.currentEvents ?? new List<EconEvent>(),
+            };
+
+            var filename = ModEntry.GetPerGameConfigFileName("events");
+            config.Save(helper, filename);
         }
 
         /**
