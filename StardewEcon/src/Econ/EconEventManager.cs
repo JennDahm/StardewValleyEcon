@@ -221,6 +221,28 @@ namespace StardewEcon.Econ
         }
 
         /**
+         * <summary>Modifies shop prices to account for current events.</summary>
+         * 
+         * <param name="helper">The helper to use for reflection.</param>
+         * <param name="menu">The menu to update.</param>
+         */
+        public void UpdateShopMenu(IModHelper helper, StardewValley.Menus.ShopMenu menu)
+        {
+            Dictionary<Item, int[]> shopItems = helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
+
+            foreach (var evnt in this.currentEvents)
+            {
+                var itemID = evnt.AffectedItem;
+                var percent = evnt.PercentChange;
+                var matchingItems = shopItems.Keys.OfType<Object>().Where(o => o.parentSheetIndex == itemID);
+                foreach (var item in matchingItems)
+                {
+                    shopItems[item][0] += (shopItems[item][0] * percent) / 100;
+                }
+            }
+        }
+
+        /**
          * <summary>Saves the current events to the player's save file.</summary>
          * <remarks>
          *  This should be called after every player save.

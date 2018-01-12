@@ -1,10 +1,11 @@
 ﻿# Basic Functionality
-* Implement price changes in shop windows.
 * Determine whether we want to deal with config file versioning.
   That is, if the version in the config file doesn't match the version of the
   mod, what do we do?
 
 # Current Issues
+* When the player purchases an item affected by an event from a shop, the price
+  stored with the item matches the original price rather than the modified price.
 * If the user deletes or changes the file that saves their current events and
   then loads a save on a day when new events would be created, existing items
   that were affected by the replaced events would keep their modified price.

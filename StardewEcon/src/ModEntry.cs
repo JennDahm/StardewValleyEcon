@@ -36,7 +36,6 @@ namespace StardewEcon
             SaveEvents.AfterLoad += SaveEvents_AfterLoad;
             SaveEvents.AfterReturnToTitle += SaveEvents_AfterReturnToTitle;
             TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
-            TimeEvents.TimeOfDayChanged += TimeEvents_TimeOfDayChanged;
             MenuEvents.MenuChanged += MenuEvents_MenuChanged;
             ControlEvents.KeyPressed += ControlEvents_KeyPressed;
 
@@ -170,23 +169,8 @@ namespace StardewEcon
                 return;
             }
 
-            // TEST CODE
-            // This code simply sets the first item in the shop to have a price
-            // of 10,000g to show that we can modify prices.
             this.Monitor.Log($"Player opened shop menu!");
-            Dictionary<Item, int[]> items = this.Helper.Reflection.GetPrivateValue<Dictionary<Item, int[]>>(menu, "itemPriceAndStock");
-            items.FirstOrDefault().Value[0] = 10000;
-        }
-
-        private void TimeEvents_TimeOfDayChanged(object sender, EventArgsIntChanged e)
-        {
-            // TEST CODE
-            // This code monitors the price of an item of interest to ensure
-            // that newly created objects of that type have the correct price.
-            var stone = new Object(Object.stone, 1);
-            var price = stone.price;
-            string time = Game1.getTimeOfDayString(Game1.timeOfDay);
-            this.Monitor.Log($"Price of stone at {time} : {price}");
+            this.eventManager.UpdateShopMenu(this.Helper, menu);
         }
 
         private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
@@ -210,13 +194,6 @@ namespace StardewEcon
             {
                 this.Monitor.Log("Events have changed at the beginning of the day.");
             }
-
-            // TEST CODE
-            // This code monitors the price of an item of interest to ensure
-            // that newly created objects of that type have the correct price.
-            var stone = new Object(Object.stone, 1);
-            var price = stone.price;
-            this.Monitor.Log($"Price of stone at beginning of day: {price}");
         }
 
         private GameLocation GetTown()
