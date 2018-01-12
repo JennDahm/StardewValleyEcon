@@ -4,6 +4,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
 using static StardewEcon.Econ.EconEvent;
+using StardewValley;
 
 namespace StardewEcon.Econ
 {
@@ -288,7 +289,7 @@ namespace StardewEcon.Econ
          * <remarks>
          *  This affects items in the player's inventory and chests as
          *  well as newly created items. This does not affect store prices, as
-         *  those are hard-coded.
+         *  those are hard-coded and must be dynamically changed.
          * </remarks>
          * 
          * <param name="e">The event to apply.</param>
@@ -296,26 +297,10 @@ namespace StardewEcon.Econ
          */
         private void ApplyEvent(EconEvent e)
         {
-            // TODO
-
-            // This is test code for affecting the pricing of objects.
-            /*int index = Object.stone;
-            string str;
-            Game1.objectInformation.TryGetValue(index, out str);
-            
-            string[] fields = str.Split('/');
-            fields[1] = 500.ToString();
-            str = string.Join("/", fields);
-
-            var chests = Game1.locations.SelectMany(l => l.objects.Values.OfType<StardewValley.Objects.Chest>());
-            var stones = chests.SelectMany(c => c.items.OfType<Object>()).Where(o => o.parentSheetIndex == index);
-            foreach(var stone in stones)
+            if (e.AffectedItem >= 0)
             {
-                stone.price = 500;
+                this.SetItemPrice(e.AffectedItem, e.NewPrice);
             }
-
-            Game1.objectInformation[index] = str;
-            this.Monitor.Log($"Modified price of stone to 500.", LogLevel.Info);*/
         }
 
         /**
@@ -323,7 +308,7 @@ namespace StardewEcon.Econ
          * <remarks>
          *  This affects items in the player's inventory and chests as
          *  well as newly created items. This does not affect store prices, as
-         *  those are hard-coded.
+         *  those are hard-coded and must be dynamically changed.
          * </remarks>
          * 
          * <param name="e">The event to unapply.</param>
@@ -331,7 +316,41 @@ namespace StardewEcon.Econ
          */
         private void UnapplyEvent(EconEvent e)
         {
-            // TODO
+            if (e.AffectedItem >= 0)
+            {
+                this.SetItemPrice(e.AffectedItem, e.OriginalPrice);
+            }
+        }
+
+        /**
+         * <summary>Sets the price of an item globally.</summary>
+         * <remarks>
+         *  This affects items in the player's inventory and chests as
+         *  well as newly created items. This does not affect store prices, as
+         *  those are hard-coded and must be dynamically changed.
+         * </remarks>
+         */
+        private void SetItemPrice(int itemID, int price)
+        {
+            // Step one: Modify the object information dictionary.
+            // This ensures that any newly created object has the correct price.
+            Game1.objectInformation.TryGetValue(itemID, out string infoStr);
+            string[] fields = infoStr.Split('/');
+            fields[1] = price.ToString(); // The price is at index 1
+            infoStr = string.Join("/", fields);
+            Game1.objectInformation[itemID] = infoStr;
+
+            // Step two: Modify any matching items in the player's inventory or chests.
+            var inventory = Game1.player.Items;
+            var chests = Game1.locations.SelectMany(l => l.Objects.Values.OfType<StardewValley.Objects.Chest>());
+            var items = chests.SelectMany(c => c.items)
+                .Concat(inventory)
+                .OfType<Object>()
+                .Where(o => o.parentSheetIndex == itemID);
+            foreach (var item in items)
+            {
+                item.price = price;
+            }
         }
 
         private bool IsUpdateToday(EventType type)

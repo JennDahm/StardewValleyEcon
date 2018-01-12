@@ -1,9 +1,14 @@
 ﻿# Basic Functionality
-
-* Actually implement price changes.
+* Implement price changes in shop windows.
 * Determine whether we want to deal with config file versioning.
   That is, if the version in the config file doesn't match the version of the
   mod, what do we do?
+
+# Current Issues
+* If the user deletes or changes the file that saves their current events and
+  then loads a save on a day when new events would be created, existing items
+  that were affected by the replaced events would keep their modified price.
+  We can only really combat this by resetting the price of every item on load.
 
 # Extended Functionality
 * Do we allow events affecting multiple items at once? Maybe necessary - crops and their seeds, for example.
