@@ -4,8 +4,7 @@
   mod, what do we do?
 
 # Current Issues
-* When the player purchases an item affected by an event from a shop, the price
-  stored with the item matches the original price rather than the modified price.
+* Shop items have twice the price change as they should.
 * If the user deletes or changes the file that saves their current events and
   then loads a save on a day when new events would be created, existing items
   that were affected by the replaced events would keep their modified price.

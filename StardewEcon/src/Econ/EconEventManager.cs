@@ -171,6 +171,7 @@ namespace StardewEcon.Econ
             if( config != null )
             {
                 this.currentEvents = new List<EconEvent>(config.Events);
+                this.currentEvents.ForEach(this.ApplyEvent);
                 return true;
             }
             else
