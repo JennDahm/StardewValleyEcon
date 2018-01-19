@@ -13,6 +13,7 @@
 250
 # Parsnip (seeds: 472)
 24
+472
 # Potato (seeds: 475)
 192
 # Rhubarb (seeds: 478)

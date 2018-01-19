@@ -2,43 +2,64 @@
 # Note: Excludes Legendaries, Cave Fish, and Trapped Items
 #######
 
-### Spring
+## Spring Fish
 
-### Summer
-# Catfish
+## Summer Fish
 # Dorado
+704
 # Rainbow Trout
+138
 
-### Fall
+## Fall Fish
 # Salmon
+139
 # Walleye
+140
 
-### Winter
+## Winter Fish
 # Lingcod
+707
 # Perch
+141
 
-### Spring-and-Summer
+## Spring-and-Summer Fish
 # Sunfish
+145
 
-### Spring-and-Fall
+## Spring-and-Fall Fish
 # Smallmouth Bass
+137
 
-### Summer-and-Winter
+## Summer-and-Winter Fish
 # Pike
+144
 # Sturgeon
+698
 
-### Fall-and-Winter
+## Fall-and-Winter Fish
 # Tiger Trout
+699
 
-### Spring-and-Summer-and-Fall
+## Spring-Summer-Fall Fish
+# Catfish
+143
 # Shad
+706
 
-### All-season
+## All-Year Fish
 # Bream
+132
 # Bullhead
+700
 # Carp
+142
 # Chub
+702
 # Largemouth Bass
+136
 # Sandfish
+164
 # Scorpion Carp
+165
 # Woodskip
+734

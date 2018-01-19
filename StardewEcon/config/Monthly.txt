@@ -1,2 +1,11 @@
-An earthquake destroyed the %2 farm near %1.
-Halelujah it's raining %2!
+Magnitude %0 Earthquake Measured Outside %1, Causing Significant Damage to %2 Crops in the Area
+Researchers Claim Recent Dust Storms Around %1 Might Have Adverse Effect on %2 Production this Season
+Study: Droughts North of %1 Unlikely to Let Up, Water Shortages Could Damage the Nation’s Largest %2 Center
+Blizzard West of %1 Causes Derailment of Train Carrying %2, Permanently Damaging the Goods
+Unexpected Train Derailment Damages Shipment of %2
+Protests Outside Capitol Building as Citizens Voice Concerns over Use of New Pesticides in %2 Production
+Hurricane Cuts Across Fern Islands, Destroying Homes and Large %2 Production Operation
+Regional Secretary of Artifacts "Furious" as Significant Architectural Digsite is Found After Being Hidden by Collection of %2 Farmers
+Is Light Pollution from Zuzu City Hurting the Production of %2? New Study Suggests it Might
+Locust Infestation Near %1 Decimates %2 Crop as Traditional Pesticides Prove Ineffective
+Parents Searching Desperately for %2 After Study Shows it Helps with a Child’s Intellectual Development

@@ -1,50 +1,98 @@
-### Spring Only
+## Spring Only
 # Daffodil
+18
 # Dandelion
+22
 # Leek
+20
 # Morel
+257
 # Salmonberry (Week 2, counting from 0)
+296
 # Spring Onion
+399
 # Wild Horseradish
+16
 
-### Summer Only
+## Summer Only
 # Fiddlehead Fern
+259
 # Grape (also a crop in Fall)
+398
 # Spice Berry
+396
 # Sweet Pea
+402
 # Rainbow Shell
+394
 
 
-### Fall Only
+## Fall Only
 # Blackberry (Week 1, counting from 0)
+410
 # Chanterelle
+281
 # Hazelnut
+408
 # Wild Plum
+406
 
-### Winter Only
+## Winter Only
 # Crocus
+418
 # Crystal Fruit
+414
 # Holly
+283
 # Snow Yam
+416
 # Winter Root
+412
 # Nautilus Shell
+392
 
-### Spring-and-Fall Only
+## Spring-and-Fall Only
 # Common Mushroom
+404
 
-### Summer-and-Fall Only
+## Summer-and-Fall Only
 # Red Mushroom (Technically all seasons in the caves, but not outside)
+420
 
+## Spring-and-Summer-and-Fall Only
+# Acorn
+309
+# Maple Seed
+310
+# Maple Syrup
+724
+# Oak Resin
+725
+# Pine Cone
+311
+# Pine Tar
+726
 
-### All seasons
+## All year
 # Sap
+92
 # Coral
+393
 # Sea Urchin
+397
 # Clam
+372
 # Cockle
+718
 # Mussel
+719
 # Oyster
+723
 # Cave Carrot
+78
 # Purple Mushroom
+422
 # Cactus Fruit
+90
 # Coconut
+88

@@ -531,7 +531,7 @@ namespace StardewEcon.Econ
             {
                 var obj = new StardewValley.Object(item, 1);
                 var info = new ItemInformation(obj.DisplayName, obj.Price);
-                allInfo.Add(item, info);
+                allInfo[item] = info;
             }
             return allInfo;
         }

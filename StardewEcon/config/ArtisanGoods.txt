@@ -1,17 +1,26 @@
-# Beer
-# Cheese
-# Cloth
-# Coffee
-# Duck Mayonnaise
-# Goat Cheese
-# Honey
-# Intentionally skipping Void Mayonnaise
-# Juice
-# Mayonnaise
-# Mead
-# Oil
-# Pale Ale
-# Truffle Oil
-# Wine
+# Intentionally excluding Void Mayonnaise
 
-# Various pickles and jellies from crops
+# Beer
+346
+# Cheese
+424
+# Cloth
+428
+# Coffee
+395
+# Duck Mayonnaise
+307
+# Goat Cheese
+426
+# Mayonnaise
+306
+# Mead
+459
+# Oil
+247
+# Pale Ale
+303
+# Truffle Oil
+432
+
+# Various honeys and wine and juices and pickles and jellies from crops

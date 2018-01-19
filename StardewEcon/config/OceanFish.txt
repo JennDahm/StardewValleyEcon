@@ -2,45 +2,59 @@
 # Note: Excludes legendaries and trapped items
 ######
 
-### Spring
+### Spring Fish
 
 
-### Summer
+## Summer Fish
 # Octopus
+149
 # Pufferfish
+128
 
-### Fall
+## Fall Fish
 
-### Winter
+## Winter Fish
 # Squid
+151
 
-### Spring-and-Summer
+## Spring-and-Summer Fish
 
-### Spring-and-Fall
+## Spring-and-Fall
 # Anchovy
+129
 # Eel
+148
 
-### Spring-and-Winter
+## Spring-and-Winter Fish
 # Herring
+147
 
-### Summer-and-Fall
+## Summer-and-Fall Fish
 # Super Cucumber
+155
 # Tilapia
+701
 
-### Summer-and-Winter
+## Summer-and-Winter Fish
 # Red Mullet
+146
 # Tuna
+130
 
-### Fall-and-Winter
+## Fall-and-Winter Fish
 # Albacore
+705
 # Sea Cucumber
+154
 
-
-### Spring-and-Summer-and-Winter
+## Spring-and-Summer-and-Winter Fish
 # Halibut
+708
 
-### Sprint-and-Fall-and-Winter
+## Sprint-and-Fall-and-Winter Fish
 # Sardine
+131
 
-### Summer-and-Fall-and-Winter
+## Summer-and-Fall-and-Winter
 # Red Snapper
+150

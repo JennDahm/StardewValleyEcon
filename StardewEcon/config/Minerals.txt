@@ -1,55 +1,108 @@
 # Stone
 
 # Aerinite
+541
 # Alamite
+538
 # Amethyst
+66
 # Aquamarine
+62
 # Baryte
+540
 # Basalt
+570
 # Bixite
+539
 # Calcite
+542
 # Celestine
+566
 # Diamond
+72
 # Dolomite
+543
 # Earth Crystal
+86
 # Emerald
+60
 # Esperite
+544
 # Fairy Stone
+577
 # Fire Opal
+565
 # Fire Quartz
+82
 # Fluorapatite
+545
 # Frozen Tear
+84
 # Geminite
+546
 # Ghost Crystal
+561
 # Granite
+569
 # Helvite
+547
 # Hematite
+573
 # Jade
+70
 # Jagoite
+549
 # Jamborite
+548
 # Jasper
+563
 # Kyanite
+550
 # Lemon Stone
+554
 # Limestone
+571
 # Lunarite
+551
 # Malachite
+552
 # Marble
+567
 # Mudstone
+574
 # Nekoite
+555
 # Neptunite
+553
 # Obsidian
+575
 # Ocean Stone
+560
 # Opal
+564
 # Orpiment
+556
 # Petrified Slime
+557
 # Prismatic Shard
+74
 # Pyrite
+559
 # Quartz
+80
 # Ruby
+64
 # Sandstone
+568
 # Slate
+576
 # Soapstone
+572
 # Star Shards
+578
 # Thunder Egg
+558
 # Tigerseye
+562
 # Topaz
+68
