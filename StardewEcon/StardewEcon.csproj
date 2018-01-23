@@ -97,9 +97,14 @@
     <Compile Include="src\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AUTHORS.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="manifest.json" />
     <None Include="packages.config" />
-    <None Include="README.md" />
+    <None Include="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TODO.md" />
   </ItemGroup>
   <ItemGroup />

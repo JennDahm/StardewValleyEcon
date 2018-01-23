@@ -26,42 +26,11 @@ namespace StardewEcon.View
      */
     public class NewsBulletinMenu : IClickableMenu
     {
-        #region Dimensions
-        /**
-         * <summary>The width of the menu inside the borders, in pixels.</summary>
-         */
-        //private int internalWidth;
-
-        /**
-         * <summary>The width of the menu inside the borders, in pixels.</summary>
-         */
-        //private int internalHeight;
-
-        /**
-         * <summary>The X offset from the upper-left corner of the bounding box to the box inside the menu's borders, in pixels.</summary>
-         */
-        //private int xOffsetToInternal;
-
-        /**
-         * <summary>The Y offset from the upper-left corner of the bounding box to the box inside the menu's borders, in pixels.</summary>
-         */
-        //private int yOffsetToInternal;
-
-        /**
-         * <summary>The height of each event section, in pixels.</summary>
-         */
-        //private int sectionHeight;
-
-        /**
-         * <summary>The height of the separators between event sections, in pixels.</summary>
-         */
-        //private int separatorHeight;
-
+        #region Private Fields
         /**
          * <summary>The dimensions of this menu.</summary>
          */
         private MenuDimensions dims;
-        #endregion
 
         /**
          * <summary>A hover box describing an event, if one is moused-over.</summary>
@@ -72,6 +41,7 @@ namespace StardewEcon.View
          * <summary>The events displayed by this menu.</summary>
          */
         private IList<EconEvent> events;
+        #endregion
 
         /**
          * <summary>Creates a new News Bulletin to show the given events.</summary>
@@ -249,10 +219,10 @@ namespace StardewEcon.View
             private const int separatorHeight = 4;
 
             // Width of section, in game pixels
-            private int sectionWidth = 100;
+            private int sectionWidth = 200;
             
             // Height of section, in game pixels
-            private int sectionHeight = 50;
+            private int sectionHeight = 45;
 
             // Number of items (sections)
             private int numItems;
