@@ -1,11 +1,11 @@
 Researchers Claim Recent Dust Storms Around %1 Might Have Adverse Effect on %8 Production this Season
 Study: Droughts North of %1 Unlikely to Let Up, Water Shortages Could Damage the Nation’s Largest %8 Center
-Blizzard West of %1 Causes Derailment of Train Carrying %8/%9, Permanently Damaging the Goods
-Unexpected Train Derailment Damages Shipment of %8/%9
-Hurricane Cuts Across Fern Islands, Destroying Homes and Large %8/%9 Production Operation
-Magnitude %0 Earthquake Off Coast of Fern Islands Causes Flooding, Destroys %8/%9 Production
-Smuggling Caravan Captured En Route to Gotoro Empire, %8/%9 Goods Released Back into Market
+Blizzard West of %1 Causes Derailment of Train Carrying %8+9, Permanently Damaging the Goods
+Unexpected Train Derailment Damages Shipment of %8+9
+Hurricane Cuts Across Fern Islands, Destroying Homes and Large %8+9 Production Operation
+Magnitude %0 Earthquake Off Coast of Fern Islands Causes Flooding, Destroys %8+9 Production
+Smuggling Caravan Captured En Route to Gotoro Empire, %8+9 Goods Released Back into Market
 Is Automation a Trend to Fear? Recently Unemployed Workers Express Frustrations over %8 Production Through Protests Across the Nation
 Recent Episode from Popular Cooking Show “The Queen of Sauce” Sparks High Demand for %9
-%8/%9 Enthusiasm Spikes after Zuzu City Tunneler’s Player Appears in Advertisement
+%8+9 Enthusiasm Spikes after Zuzu City Tunneler’s Player Appears in Advertisement
 All of the Young People are Trying it- %9 Sees a Spike in Popularity

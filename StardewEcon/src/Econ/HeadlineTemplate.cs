@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -112,8 +113,10 @@ namespace StardewEcon.Econ
             // Note that the parenthesis around each section of the regex is
             // **important**. Using them forces the split function to include what
             // it captured in the output. Without them, we'd lose those tokens.
+            // The nested set of parenthesis starts with "?:", which indicates
+            // that it is non-capturing, which is also **important.**
             // This only works in .NET 2.0 and up.
-            string escapeRegex = @"(%%)|(%\d+)";
+            string escapeRegex = @"(%%)|(%\d+(?:\+\d+)*)";
             foreach (string split in Regex.Split(template, escapeRegex))
             {
                 // We may get some empty strings in the output of Split if two
@@ -136,55 +139,102 @@ namespace StardewEcon.Econ
                 }
 
                 // Escaped strings:
-
-                // Note that we're assured that there is at least one character
-                // in escape. The escape regex only matches strings with at least
-                // two characters (among other features).
-                // We also know that escape is one of two things: a %, or an integer.
-                string escape = split.Substring(1);
-
-                if (escape[0] == '%')
-                {
-                    // Escaping a %
-                    tokens.Add(new HeadlineToken
-                    {
-                        type = HeadlineTokenType.String,
-                        str = "%"
-                    });
-                }
-                else
-                {
-                    // Integer marking a generation point
-                    int val = Int32.Parse(escape);
-
-                    if (!numToTypeMap.ContainsKey(val))
-                    {
-                        // If we don't recognize the number, just use the
-                        // full escape sequence.
-                        tokens.Add(new HeadlineToken
-                        {
-                            type = HeadlineTokenType.String,
-                            str = split
-                        });
-                    }
-                    else
-                    {
-                        // If we do recognize the number, add a token to
-                        // indicate the appropriate thing to generate and
-                        // substitute.
-                        var types = numToTypeMap[val];
-                        tokens.Add(new HeadlineToken
-                        {
-                            type = types.Item1,
-                            subtypes = new List<HeadlineTokenSubtype>
-                            {
-                                types.Item2
-                            },
-                        });
-                    }
-                }
+                tokens.Add(ParseEscapeSequence(split));
             }
             return tokens.ToArray();
+        }
+
+        /**
+         * <summary>Parses an escaped section of a headline template.</summary>
+         * <remarks>
+         *  The given string must start with a '%' followed by one of two things:
+         *  <list type="bullet">
+         *      <item>another '%', or</item>
+         *      <item>a '+' separated list of positive integers.</item>
+         *  </list>
+         *  
+         *  Examples include:
+         *  <list type="bullet">
+         *      <item>"%%"</item>
+         *      <item>"%3"</item>
+         *      <item>"%1+2+4</item>
+         *  </list>
+         *  
+         *  Examples do not include:
+         *  <list type="bullet">
+         *      <item>"%"</item>
+         *      <item>"3"</item>
+         *      <item>"%+"</item>
+         *      <item>"%+2"</item>
+         *      <item>"%1+"</item>
+         *      <item>"%1 + 2 + 3"</item>
+         *      <item>"%1,2,3"</item>
+         *  </list>
+         * </remarks>
+         * 
+         * <param name="escape">The escape sequence to parse.</param>
+         * <returns>A HeadlineToken representing this escape sequence.</returns>
+         */
+        private HeadlineToken ParseEscapeSequence(string escape)
+        {
+            // Note that we're assured that there is at least one character
+            // in escape. The escape regex only matches strings with at least
+            // two characters (among other features).
+            // We also know that escape is one of two things: a %, or a list of
+            // integers separated by +.
+            string subEscape = escape.Substring(1);
+
+            if (subEscape[0] == '%')
+            {
+                // Escaping a %
+                return new HeadlineToken
+                {
+                    type = HeadlineTokenType.String,
+                    str = "%"
+                };
+            }
+
+            // Now we have a list of integers. We need to parse them.
+            var ints = subEscape.Split('+').Select(Int32.Parse).ToList();
+
+            // First, make sure that all of them can be mapped.
+            // If not all of them can, we should just put the entire sequence
+            // into the token stream as it is unmodified.
+            if (!ints.All(numToTypeMap.ContainsKey))
+            {
+                return new HeadlineToken
+                {
+                    type = HeadlineTokenType.String,
+                    str = escape
+                };
+            }
+            var superAndSubtypes = ints.Select(i => numToTypeMap[i]).ToList();
+
+            // Next, make sure that all of them map to the same super type.
+            // If they don't all match, handle them the same way as above.
+            var distinctSupertypes = superAndSubtypes
+                .Select(t => t.Item1)
+                .Distinct()
+                .ToList();
+            if (distinctSupertypes.Count != 1)
+            {
+                return new HeadlineToken
+                {
+                    type = HeadlineTokenType.String,
+                    str = escape
+                };
+            }
+
+            var type = distinctSupertypes.First();
+            var distinctSubtypes = superAndSubtypes
+                .Select(t => t.Item2)
+                .Distinct()
+                .ToList();
+            return new HeadlineToken
+            {
+                type = type,
+                subtypes = distinctSubtypes,
+            };
         }
         #endregion
 
@@ -227,7 +277,6 @@ namespace StardewEcon.Econ
          */
         private int GenerateItem(HeadlineTokenSubtype type, IHeadlineContentProvider rng)
         {
-            // TODO
             switch(type)
             {
                 case HeadlineTokenSubtype.Crop: return rng.GetRandomCrop();
@@ -253,7 +302,6 @@ namespace StardewEcon.Econ
          */
         private string GenerateOther(HeadlineTokenSubtype type, IHeadlineContentProvider rng)
         {
-            // TODO
             switch(type)
             {
                 case HeadlineTokenSubtype.Earthquake: return rng.GetRandomEarthquake();
