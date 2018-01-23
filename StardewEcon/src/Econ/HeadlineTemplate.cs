@@ -51,6 +51,8 @@ namespace StardewEcon.Econ
             int oldPrice = 0;
             foreach(HeadlineToken token in this.headlineTemplate)
             {
+                // Get the subtype:
+                var subtype = HeadlineTemplate.GetSubType(token, rng);
                 switch(token.type)
                 {
                     case HeadlineTokenType.Item:
@@ -58,7 +60,7 @@ namespace StardewEcon.Econ
                         // Generate an item, whatever kind.
                         // If we haven't yet generated an item, select that to
                         // be the item affected by this event.
-                        int item = GenerateItem(token.subtype, rng);
+                        int item = GenerateItem(subtype, rng);
                         var itemInfo = rng.GetItemInformation(item);
                         if(affectedItem == -1)
                         {
@@ -71,7 +73,7 @@ namespace StardewEcon.Econ
                     }
                     case HeadlineTokenType.Other:
                     {
-                        builder.Append(GenerateOther(token.subtype, rng));
+                        builder.Append(GenerateOther(subtype, rng));
                         break;
                     }
                     case HeadlineTokenType.String:
@@ -174,7 +176,10 @@ namespace StardewEcon.Econ
                         tokens.Add(new HeadlineToken
                         {
                             type = types.Item1,
-                            subtype = types.Item2,
+                            subtypes = new List<HeadlineTokenSubtype>
+                            {
+                                types.Item2
+                            },
                         });
                     }
                 }
@@ -184,6 +189,32 @@ namespace StardewEcon.Econ
         #endregion
 
         #region Private Generation Functions
+        /**
+         * <summary>Returns the subtype of the token, randomly selecting one if necessary.</summary>
+         * 
+         * <param name="token">The token whose subtype to get.</param>
+         * <param name="rng">The RNG provider to use if necessary.</param>
+         * 
+         * <returns>The subtype of the token.</returns>
+         */
+        private static HeadlineTokenSubtype GetSubType(HeadlineToken token, IHeadlineContentProvider rng)
+        {
+            if (token.subtypes == null || token.subtypes.Count == 0)
+            {
+                return default(HeadlineTokenSubtype);
+            }
+            else if (token.subtypes.Count == 1)
+            {
+                return token.subtypes[0];
+            }
+            else
+            {
+                var rand = rng.GetRNG();
+                var index = rand.Next(token.subtypes.Count);
+                return token.subtypes[index];
+            }
+        }
+
         /**
          * <summary>Generates a random item of the given type.</summary>
          * 
@@ -259,7 +290,7 @@ namespace StardewEcon.Econ
         private struct HeadlineToken
         {
             public HeadlineTokenType type;
-            public HeadlineTokenSubtype subtype;
+            public List<HeadlineTokenSubtype> subtypes;
             public string str;
         }
 
@@ -272,6 +303,10 @@ namespace StardewEcon.Econ
         {
             /**
              * <summary>A raw string, to be copied directly into the output.</summary>
+             * <remarks>
+             *  The subtype parameter of the HeadlineToken struct doesn't matter
+             *  when the type is set to String - it's simply ignored.
+             * </remarks>
              */
             String,
 
@@ -282,10 +317,12 @@ namespace StardewEcon.Econ
              *  specifically what type of item. Acceptable values are as follows:
              *  <list type="bullet">
              *      <item><see cref="HeadlineTokenSubtype.Crop"/></item>
-             *      <item><see cref="HeadlineTokenSubtype.Artisan"/></item>
              *      <item><see cref="HeadlineTokenSubtype.Mineral"/></item>
+             *      <item><see cref="HeadlineTokenSubtype.Foraged"/></item>
              *      <item><see cref="HeadlineTokenSubtype.RiverFish"/></item>
              *      <item><see cref="HeadlineTokenSubtype.OceanFish"/></item> 
+             *      <item><see cref="HeadlineTokenSubtype.Artisan"/></item>  
+             *      <item><see cref="HeadlineTokenSubtype.Cooked"/></item> 
              *  </list>
              * </remarks>
              */
@@ -298,7 +335,9 @@ namespace StardewEcon.Econ
              *  specifically what type of other parameter. Acceptable values are
              *  as follows:
              *  <list type="bullet">
+             *      <item><see cref="HeadlineTokenSubtype.Earthquake"/></item>
              *      <item><see cref="HeadlineTokenSubtype.Location"/></item>
+             *      <item><see cref="HeadlineTokenSubtype.Fatalities"/></item>
              *  </list>
              * </remarks>
              */
