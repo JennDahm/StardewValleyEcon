@@ -3,8 +3,8 @@
   "Author": "Bryce Abell & Jennifer Dahm",
   "Version": {
     "MajorVersion": 0,
-    "MinorVersion": 1,
-    "PatchVersion": 0,
+    "MinorVersion": 0,
+    "PatchVersion": 2,
     "Build": null
   },
   "Description": "Adds dynamic economic events that vary the prices on crops and other items.",
